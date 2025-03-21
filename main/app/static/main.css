@@ -1,0 +1,104 @@
+/* Sortable.js related styles */
+.task-ghost {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+
+.task-chosen {
+    background: #e0e0e0;
+    cursor: grabbing;
+}
+
+.task-drag {
+    opacity: 0.8;
+    cursor: grabbing;
+}
+
+.w-layout-grid.list-item { 
+    cursor: grab;
+}
+
+.list_empty {
+    cursor: default !important;
+}
+
+.list-item {
+    cursor: grab !important;
+    position: relative;
+    z-index: 1;
+}
+
+.list-item.animating {
+    z-index: 2;
+}
+
+
+
+
+/*force subpage-link to cursor : pointer*/
+.w-layout-grid .subpage .subpage_link:not(.delete-section-null) {
+    cursor: pointer !important;
+}
+[data-wf-page] .subpage .subpage_link:not(.delete-section-null) {
+    cursor: pointer !important;
+}
+
+
+
+
+
+
+/* Radio styling */
+body input[type="radio"].radio.style-1 {
+    position: relative !important;
+    width: 20px !important;
+    height: 20px !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    border: 1px solid #ccc !important;
+    border-radius: 50% !important;
+    outline: none !important;
+    background-color: #fff !important;
+}
+
+body input[type="radio"].radio.style-1:checked {
+    transform: scale(0.8) !important;
+    background-color: #222325 !important;
+}
+
+
+/*add-task-popup_ project dropdown menu
+.project-dropdown-container {
+    position: relative;
+    width: 200px;
+}
+
+.project-dropdown-header {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-top: none;
+    background: white;
+    z-index: 1000;
+}
+
+.project-option {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.project-option:hover {
+    background-color: #f5f5f5;
+}*/

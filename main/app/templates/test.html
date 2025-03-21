@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+{% load static %}
+<html data-wf-page="67aeea944d589896c64eea3b" data-wf-site="67aeea944d589896c64ee9d5"
+  class="w-mod-js wf-inter-n4-active wf-inter-n3-active wf-inter-n5-active wf-active w-mod-ix">
+
+<head>
+  <style>
+    .wf-force-outline-none[tabindex="-1"]:focus {
+      outline: none;
+    }
+  </style>
+  <meta charset="utf-8">
+  <title>Home - Kamata</title>
+  <meta
+    content="Connect strategic goals to the teams that help achieve them. See progress in real time, update stakeholders, and keep the company on track."
+    name="description">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/css/kamata.webflow.1160693ce.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,regular,500" media="all">
+  <script type="text/javascript">WebFont.load({ google: { families: ["Inter:300,regular,500"] } });</script>
+  <script
+    type="text/javascript">!function (o, c) { var n = c.documentElement, t = " w-mod-"; n.className += t + "js", ("ontouchstart" in o || o.DocumentTouch && c instanceof DocumentTouch) && (n.className += t + "touch") }(window, document);</script>
+  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca5442dd03bfa3082f27ba_favicon%2032.png"
+    rel="shortcut icon" type="image/x-icon">
+  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca5439914cbaed2f7e4890_favicon256.png"
+    rel="apple-touch-icon">
+
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <link rel="stylesheet" href="https://fengyuanchen.github.io/datepicker/css/datepicker.css">
+
+</head>
+
+<body cz-shortcut-listen="true">
+  <div class="main-wrap none">
+    <div class="sidebar-wrap">
+      <div class="sidebar-content_up">
+        <div class="content-wrap sidebar_1">
+          <div class="button create all">
+            <div class="decor _1"></div>
+            <div class="decor _2"></div>
+          </div>
+        </div>
+        <div class="content-wrap sidebar_1"><a href="#" class="button sidebar-menu w-inline-block">
+            <div class="icon-wrap"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca71aa66f7870e79c41582_home.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>Home</div>
+          </a><a href="#" class="button sidebar-menu is-active w-inline-block">
+            <div class="icon-wrap"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca73b0f7de5b82e0200aa6_tasks.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>My tasks</div>
+          </a><a href="#" class="button sidebar-menu w-inline-block">
+            <div class="icon-wrap"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca71aaffd3f274422919bf_inbox.icon.svg"
+                loading="lazy" alt="">
+              <div class="decor inboxnotification-icon is-active"></div>
+            </div>
+            <div>Inbox</div>
+          </a>
+          <div class="content-wrap sidebar_2"><a href="#" class="button sidebar-menu w-inline-block">
+              <div class="icon-wrap"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca71aa818cba39ae52985b_report.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div>Reporting</div>
+            </a>
+            <div class="project-dropdown_sidebar">
+              <div class="text small">Projects</div>
+              <div class="list-project_dropdown">
+                <div class="project-color-ball purple"></div>
+                <div>Kamata design v4.1.1</div>
+              </div>
+              <div class="list-project_dropdown">
+                <div class="project-color-ball yellow"></div>
+                <div>Kamata DB update v2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-content_down">
+        <div class="content-wrap sidebar_1"><a href="#" class="button sidebar-menu w-inline-block">
+            <div class="icon-wrap"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67caa50d1757d24ca5cdbc96_settings.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>Settings</div>
+          </a>
+          <div class="paddingleft-6">
+            <div class="button user-profile"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-wrap">
+      <div class="searchbar-wrap">
+        <form action="/search" class="search w-form"><input class="searchbar-custom w-input" maxlength="256"
+            name="query" placeholder="Search" type="search" id="search" required=""><input type="submit"
+            class="search-button w-button" value="Search"></form>
+      </div>
+      <div class="w-layout-grid topbar-content-wrap">
+        <div id="w-node-c7ae0cee-eda5-eab6-fc67-11cd50fe6a3e-c64eea3b" class="topbar_header">
+          <div class="button img-wrap profile"></div>
+          <div class="text title _1">My Tasks</div>
+        </div>
+        <div id="w-node-_11e6370c-14ee-cfb9-8a9b-27e52f836482-c64eea3b" class="taskpanel_selector"><a href="#"
+            class="link views w-inline-block">
+            <div class="img-wrap views-icon icon"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca894f66f7870e79d7203c_list.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>List</div>
+          </a><a href="#" class="link views is-active w-inline-block">
+            <div class="img-wrap views-icon icon"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca894f4270540e9aacfe8f_board.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>Board</div>
+          </a><a href="#" class="link views cursorblock w-inline-block">
+            <div class="img-wrap views-icon icon"><img
+                src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca894fe1200d7aa6c5c95e_calendar.icon.svg"
+                loading="lazy" alt=""></div>
+            <div>Calendar</div>
+          </a></div>
+        <div id="w-node-bf4d4b37-0b48-b5dc-f0b7-4b567f8e2c15-c64eea3b" class="decor _5"></div>
+        <div id="w-node-_9061b51e-935b-e7ac-d50a-0adf4edb31f2-c64eea3b" class="w-layout-grid topbar_settings">
+          <div id="w-node-_9d3733f6-5a80-b591-2cac-dab826e54d6c-c64eea3b" class="addtask-topbar">
+            <div class="button addtask_topbar" data-popup-trigger="create-task">
+              <div class="icon-wrap width-13"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca94cdbc7d433c936e0b57_decor.svg"
+                  loading="lazy" alt=""></div>
+              <div class="text-block">Add tasks</div>
+            </div>
+            <div class="button moreaction_topbar">
+              <div class="icon-wrap width-13"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca9756e64adfb4b315ccba_decor%202.svg"
+                  loading="lazy" alt=""></div>
+            </div>
+          </div>
+          <div id="w-node-_45d34834-1b3f-18a7-550c-5c7e7e8cb4f9-c64eea3b" class="settings-topbar">
+            <div class="button setting">
+              <div class="icon-wrap width-13"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67caa113577586fe302abc13_filter.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div>Filter</div>
+            </div>
+            <div class="button setting">
+              <div class="icon-wrap width-13"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67caa113bb04af2cfff01299_sort.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div>Sort</div>
+            </div>
+            <div class="decor _6"></div>
+            <div class="button setting">
+              <div class="icon-wrap width-13"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67caa115e6280a58dfd6b6df_setting.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div>Options</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-layout-grid list-wrap">
+      <div id="w-node-_60766be2-e2cf-9137-be7b-4c8f2ddb67e6-c64eea3b" class="list-group">
+        <!-- First list (Recently assigned) -->
+        <div data-list="1" class="list">
+          <div class="list-header">
+            <div class="flex gap5">
+              <div class="list_header-title">Recently assigned</div>
+              <div class="text list_header-total">{{ tasks|filter_by_list:1|length }}<br></div>
+            </div>
+            <div class="flex y-center gap2 relative">
+              <div data-list="1" class="explanation-box tooltip-list_header-addtask-hover">
+                <div>Add task</div>
+              </div>
+              <div data-list="1" class="explanation-box tooltip-delete-section-null-hover">
+                <div>This section can't be deleted because new tasks assigned to you appear here</div>
+              </div>
+              <div data-list="1" class="explanation-box tooltip-list_header-moreactions-hover">
+                <div>More actions</div>
+              </div>
+              <div data-explains="tooltip-list_header-addtask-hover" data-list="1" class="button list_header-addtask" data-popup-trigger="create-task">
+                <img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce43acba85b0a643ce68e9_addTask.icon.svg"
+                  loading="lazy" alt="" class="img _10x10">
+              </div>
+              <div data-explains="tooltip-list_header-moreactions-hover" data-list="1"
+                class="button list_header-moreactions"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce4317b77d31d5d2f8d3d6_combo%20shape.svg"
+                  loading="lazy" alt="" class="img _10x10">
+              </div>
+              <div data-list="1" class="subpage list_header-moreactions-menu">
+                <div class="subpage_link rename-section">
+                  <div>Rename section</div>
+                </div>
+                <div data-explains="tooltip-delete-section-null-hover" data-list="1"
+                  class="subpage_link delete-section-null">
+                  <div class="img-wrap trashcan-icon"><img
+                      src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67cfc412081bd852467be8d0_trashcan.icon%20(3).svg"
+                      loading="lazy" alt=""></div>
+                  <div>Delete section</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% for task in tasks|filter_by_list:1 %}
+          <div data-item="{{ task.id }}"
+            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
+            <div class="flex gap5">
+              <div class="button icon"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce36a7adb52702c2506ede_task.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div class="list_item-title">{{ task.name }}</div>
+            </div>
+            <div class="flex gap5">
+              <div class="list_item-priority {{ task.priority.priority }}">{{ task.priority.priority }}</div>
+              <div class="list_item-status {{ task.status.status }}">{{ task.status.status }}</div>
+            </div>
+            <div class="flex y-center gap5">
+              <div class="button user-profile"></div>
+              <div>{{ task.start_date|date:"M d" }} - {{ task.end_date|date:"d" }}</div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="list_empty" {% if tasks|filter_by_list:1 %}style="display: none" {% endif %}>
+            <div class="button list_empty-addtask">+ Add task</div>
+          </div>
+        </div>
+
+        <!-- Dynamic lists -->
+        {% for list in lists %}
+        {% if list.id > 1 %}
+        <div data-list="{{ list.id }}" class="list">
+          <div class="list-header">
+            <div class="flex gap5">
+              <div class="list_header-title">{{ list.title }}</div>
+              <div class="text list_header-total">{{ tasks|filter_by_list:list.id|length }}<br></div>
+            </div>
+            <div class="flex y-center gap2 relative">
+              <div data-list="{{ list.id }}" class="explanation-box tooltip-list_header-addtask-hover">
+                <div>Add task</div>
+              </div>
+              <div data-list="{{ list.id }}" class="explanation-box tooltip-list_header-moreactions-hover">
+                <div>More actions</div>
+              </div>
+              <div data-explains="tooltip-list_header-addtask-hover" data-list="{{ list.id }}" 
+                class="button list_header-addtask" data-popup-trigger="create-task">
+                <img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce43acba85b0a643ce68e9_addTask.icon.svg"
+                  loading="lazy" alt="" class="img _10x10">
+              </div>
+              <div data-explains="tooltip-list_header-moreactions-hover" data-list="{{ list.id }}"
+                class="button list_header-moreactions">
+                <img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce4317b77d31d5d2f8d3d6_combo%20shape.svg"
+                  loading="lazy" alt="" class="img _10x10">
+              </div>
+              <div data-list="{{ list.id }}" class="subpage list_header-moreactions-menu">
+                <div class="subpage_link rename-section">
+                  <div>Rename section</div>
+                </div>
+                <div data-popup-trigger="delete-list" data-list="{{ list.id }}" class="subpage_link">
+                  <div class="img-wrap trashcan-icon">
+                    <img
+                      src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67cfc412081bd852467be8d0_trashcan.icon%20(3).svg"
+                      loading="lazy" alt="">
+                  </div>
+                  <div>Delete section</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% for task in tasks|filter_by_list:list.id %}
+          <div data-item="{{ task.id }}"
+            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
+            <div class="flex gap5">
+              <div class="button icon"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce36a7adb52702c2506ede_task.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div class="list_item-title">{{ task.name }}</div>
+            </div>
+            <div class="flex gap5">
+              <div class="list_item-priority {{ task.priority.priority }}">{{ task.priority.priority }}</div>
+              <div class="list_item-status {{ task.status.status }}">{{ task.status.status }}</div>
+            </div>
+            <div class="flex y-center gap5">
+              <div class="button user-profile"></div>
+              <div>{{ task.start_date|date:"M d" }} - {{ task.end_date|date:"d" }}</div>
+            </div>
+          </div>
+          {% endfor %}
+          <div class="list_empty" {% if tasks|filter_by_list:list.id %}style="display: none" {% endif %}>
+            <div class="button list_empty-addtask">+ Add task</div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Add section button -->
+        <div class="list_addsection">
+          <div class="list-header">
+            <div class="add-section-wrapper">
+              <div class="button img-wrap addmore"><img
+                  src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce43acba85b0a643ce68e9_addTask.icon.svg"
+                  loading="lazy" alt=""></div>
+              <div class="add-section-title" contenteditable="false">Add section</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div data-popup="delete-list" class="delete-list-popup">
+    <div class="delete-list-popup_wrap">
+      <div class="w-layout-grid delete-list-popup_content">
+        <div class="flex direction-vertical gap-25">
+          <div class="delete-list-popup_title">Delete this section?</div>
+          <div>This section <strong class="delete-section-confirmation_list-title">Do today</strong> includes
+            <strong>2</strong> incomplete tasks.
+          </div>
+        </div>
+        <div class="flex direction-vertical gap-5">
+          <div class="flex gap5">
+            <input type="radio" name="delete-option" value="keep" class="radio style-1" checked>
+            <div>Delete this section and keep these 2 tasks</div>
+          </div>
+          <div class="flex gap5">
+            <input type="radio" name="delete-option" value="delete" class="radio style-1">
+            <div>Delete this section and delete these 2 tasks</div>
+          </div>
+        </div>
+        <div class="flex direction-vertical gap-5">
+          <div data-popup-action="delete-list" class="button delete-list-popup_delete">
+            <div>Delete section</div>
+          </div>
+          <div data-popup-close="delete-list" class="button delete-list-popup_cancel">
+            <div>Cancel</div>
+          </div>
+        </div>
+      </div>
+      <div data-popup-close="delete-list" class="button close delete-list-popup_close-button"></div>
+    </div>
+  </div>
+  <div class="create-task-popup" data-popup="create-task">
+    <div class="w-layout-grid create-task-popup-wrap">
+      <div id="w-node-ddeec698-e89c-e001-79ee-869980d03e62-c64eea3b" class="crate-task-popup-content">
+        <div class="create-task-popup-grid-wrap">
+          <div class="w-layout-grid create-task-popup-grid">
+            <div class="button close create-task-popup_close-button" data-popup-close="create-task"></div>
+            <div class="flex padding-top-5 border-top">
+              <div class="create-task-popup_task-name" contenteditable="false">Design Homepage Wireframe...</div>
+            </div>
+            <div class="w-layout-grid create-task-popup_tags-wrap">
+              <div id="w-node-_5f9f4d5b-c393-928a-554c-baf069a2c697-c64eea3b" class="create-task-popup_tags">
+                <div class="img-wrap _20x20"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6218463b1cd3e6799b7_add-task-popup_status.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Status</div>
+              </div>
+              <div id="w-node-a577bcae-624d-2d2d-7cc2-4e6712955500-c64eea3b" class="flex y-center">
+                <div class="list_item-status not-selected">
+                  <div class="decor _7"></div>
+                  <div class="create-task-popup_status inner-text">Null</div>
+                </div>
+              </div>
+              <div id="w-node-ae521bdf-6b4d-08ea-967f-1ee85c5ff3ff-c64eea3b" class="create-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6226bf04d6f37681c45_add-task-popup_priority.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Priority</div>
+              </div>
+              <div id="w-node-cfc57972-fa13-2070-0a55-0d294dfc8925-c64eea3b" class="flex y-center">
+                <div class="list_item-priority not-selected">
+                  <div class="decor _7"></div>
+                  <div class="create-task-popup_priority inner-text">Null</div>
+                </div>
+              </div>
+              <div id="w-node-_451be1d7-bf20-7d5c-ac53-d5cad1a92ed1-c64eea3b" class="create-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67da0c9d4c026a0f76eeff7a_add-task-popup_project.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Project</div>
+              </div>
+              <div id="w-node-fab8d968-50c9-8dd1-3413-245211f3f59e-c64eea3b" class="create-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6212b096d738deca3a9_add-task-popup_calendar.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Due Date</div>
+              </div>
+              <div id="w-node-_82e8e5c8-aca0-b1e9-cf55-6bd432048da2-c64eea3b" class="date-inputs-container">
+                <input id="taskStartDate" class="date-input" placeholder="Start date" autocomplete="off">
+                <input id="taskEndDate" class="date-input" placeholder="End date" autocomplete="off">
+              </div>
+              <div id="w-node-eb2ef274-ffd9-02c6-c329-83a059148726-c64eea3b"
+                class="create-task-popup_tags cursor-block">
+                <div class="img-wrap _20x20"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c621c68248d973b06b51_add-task-popup_tag.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Tags</div>
+              </div>
+              <div id="w-node-fa424b4e-12d1-b17c-2192-ee0bba9b7bb2-c64eea3b"
+                class="flex y-center gap5 direction-stackdown cursor-block">
+                <div class="delete-me_tags">Task</div>
+                <div class="delete-me_tags">Wireframe</div>
+                <div class="delete-me_tags">Homepage</div>
+              </div>
+              <div id="w-node-_76849be5-edce-0a39-79ac-011238db5948-c64eea3b"
+                class="create-task-popup_tags cursor-block">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c621cc0ca4ec47292e58_add-task-popup_assignees.svg"
+                    loading="lazy" alt=""></div>
+                <div>Assignees</div>
+              </div>
+              <div id="w-node-_7131aef5-f52b-3b41-3c79-77a1ad383766-c64eea3b" class="flex padding-left-5">
+                <div class="button user-profile cursor-block"></div>
+              </div>
+              
+              <div id="w-node-be135ac1-0fae-f4d3-e4fa-3e0f2529cc7a-c64eea3b">
+                <div class="project-dropdown-container">
+                  <div class="project-dropdown-header" data-dropdown-trigger>
+                    <span class="selected-project-text">No project</span>
+                  </div>
+                  <div class="project-dropdown-list" style="display: none;">
+                    <div class="project-option" data-project-id="null">
+                      <span>No project</span>
+                    </div>
+                    {% for project in projects %}
+                    <div class="project-option" data-project-id="{{ project.id }}">
+                      <span>{{ project.name }}</span>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="create-task-popup_description">
+              <div class="flex padding-left-5">Description</div>
+              <div class="create-task-popup_description-area-wrap">
+                <div class="create-task-popup_description-area" contenteditable="false">Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.</div>
+              </div>
+            </div>
+            <div id="w-node-_16707b88-6c8a-e22d-49c1-bfe1deb1c8ab-c64eea3b" class="flex justify-end gap5">
+              <div class="button create-task-popup_cancel-button" data-popup-close="create-task">
+                <div>Cancel</div>
+              </div>
+              <div class="button create-task-popup_create-task-button" data-popup-action="create-task">
+                <div>Create task</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'index.js' %}"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://fengyuanchen.github.io/datepicker/js/datepicker.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Initialize datepickers
+      $('#taskStartDate, #taskEndDate').datepicker({
+        format: 'yyyy/mm/dd',
+        autoHide: true,
+        zIndex: 2048,
+        container: 'body', // Change container to body for better positioning
+        show: function () {
+          // Add backdrop when calendar opens on mobile/tablet
+          if (window.innerWidth <= 1024) {
+            $('body').append('<div class="datepicker-backdrop"></div>');
+          }
+        },
+        hide: function () {
+          // Remove backdrop when calendar closes
+          $('.datepicker-backdrop').remove();
+        }
+      });
+
+      // Make inputs readonly on mobile
+      if (window.innerWidth < 768) {
+        $('.date-input').attr('readonly', 'readonly');
+      }
+
+      // Close datepicker when clicking backdrop
+      $(document).on('click', '.datepicker-backdrop', function () {
+        $('#taskStartDate, #taskEndDate').datepicker('hide');
+      });
+    });
+  </script>
+
+  <!-- You can put your custom CSS attributes -->
+  <style>
+    /* You can apply your own color! 
+    --main-light-color is the light grey, 
+    --main-dark-color is the text
+    --main-active-color is the highlight
+    you can just add like red, or blue or any helx you like! */
+    :root {
+      --main-light-color: #f3f5fb;
+      --main-dark-color: black;
+      --main-active-color: #137bf6;
+    }
+
+    .datepicker-dropdown {
+      border-radius: 8px !important;
+      border: 0 !important;
+      -webkit-box-shadow: 0px 48px 88px rgba(23, 9, 54, 0.08);
+      box-shadow: 0px 48px 88px rgba(23, 9, 54, 0.08);
+      box-sizing: border-box;
+    }
+
+    .datepicker-panel>ul[data-view="week"]>li {
+      /*Week list style*/
+      background-color: white;
+      color: #cacaca;
+      font-weight: 400;
+      text-transform: uppercase;
+      margin: 0;
+      height: initial;
+      padding-top: 3px;
+      margin-bottom: 4px;
+    }
+
+
+    .datepicker-panel>ul[data-view="week"] li:first-child {
+      /*sunday border radius*/
+      border-radius: 20px 0 0 20px;
+    }
+
+    .datepicker-panel>ul[data-view="week"] li:last-child {
+      /*saturday border radius*/
+      border-radius: 0 20px 20px 0;
+    }
+
+    .datepicker-top-left::before,
+    .datepicker-top-left::after {
+      display: none;
+    }
+
+    /* When only highlighted */
+    .datepicker-panel>ul>li.highlighted:not(.picked) {
+      color: black !important;
+      background: none !important;
+      position: relative !important;
+    }
+
+    .datepicker-panel>ul>li.highlighted:not(.picked)::after {
+      content: '';
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 25px !important;
+      /* Smaller circle size */
+      height: 25px !important;
+      /* Smaller circle size */
+      border: 1px solid black !important;
+      border-radius: 50% !important;
+    }
+
+    /* When only picked */
+    .datepicker-panel>ul>li.picked:not(.highlighted) {
+      color: white !important;
+      background: none !important;
+      position: relative !important;
+    }
+
+    .datepicker-panel>ul>li.picked:not(.highlighted)::after {
+      content: '';
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 25px !important;
+      /* Smaller circle size */
+      height: 25px !important;
+      /* Smaller circle size */
+      background: black !important;
+      border-radius: 50% !important;
+      z-index: -1 !important;
+    }
+
+    /* When both highlighted and picked */
+    .datepicker-panel>ul>li.highlighted.picked {
+      color: white !important;
+      background: none !important;
+      position: relative !important;
+    }
+
+    .datepicker-panel>ul>li.highlighted.picked::after {
+      content: '';
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 25px !important;
+      /* Smaller circle size */
+      height: 25px !important;
+      /* Smaller circle size */
+      background: black !important;
+      border: 1px solid black !important;
+      border-radius: 50% !important;
+      z-index: -1 !important;
+    }
+
+    /* Regular day hover state */
+    .datepicker-panel>ul>li[data-view="day"]:hover {
+      background: none !important;
+      position: relative !important;
+    }
+
+    .datepicker-panel>ul>li[data-view="day"]:hover::after {
+      content: '';
+      position: absolute !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      width: 25px !important;
+      /* Same size as highlighted/picked */
+      height: 25px !important;
+      background: #e0e0e049 !important;
+      /* Light hover background */
+      border-radius: 50% !important;
+      z-index: -1 !important;
+    }
+
+    /* Remove the default hover background */
+    .datepicker-panel>ul>li:hover {
+      background: none !important;
+    }
+
+    li[data-view="month current"],
+    li[data-view="year current"] {
+      text-align: left;
+      color: var(--main-dark-color);
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      /* line-height: 24px; */
+      padding-left: 15px;
+      border-radius: 10px;
+    }
+
+    li[data-view="month current"],
+    li[data-view="year current"]:hover {
+      border-radius: 10px !important;
+    }
+
+
+    .datepicker-panel>ul>li:hover {
+      /* When hover not selected */
+      background: #c7c7c749;
+      border-radius: 50%;
+    }
+
+    li[data-view="month current"],
+    li[data-view="year current"],
+    li[data-view="years current"] {
+      margin-bottom: 4px !important;
+    }
+
+    @media screen and (min-width: 768px) {
+      .datepicker-dropdown {
+        width: 364px;
+        padding: 12px;
+      }
+
+      .datepicker-panel>ul>li {
+        width: 48px;
+        height: 48px;
+        padding-top: 10px;
+      }
+
+      li[data-view="month next"],
+      li[data-view="year next"],
+      li[data-view="years next"] {
+        position: absolute;
+        right: 18px
+      }
+
+      li[data-view="month prev"],
+      li[data-view="year prev"],
+      li[data-view="years prev"] {
+        position: absolute;
+        right: 66px
+      }
+
+      ul[data-view="months"] li,
+      ul[data-view="years"] li {
+        padding-top: 0px;
+        width: 57px !important;
+      }
+    }
+
+    @media screen and (max-width: 1024px) {
+      .datepicker-dropdown {
+        position: fixed !important;
+        /* Force fixed positioning */
+        top: 50% !important;
+        /* Center vertically */
+        left: 50% !important;
+        /* Center horizontally */
+        transform: translate(-50%, -50%) !important;
+        /* Perfect centering */
+        width: 320px;
+        /* Fixed width */
+        max-width: 90vw;
+        /* Maximum width relative to viewport */
+        z-index: 9999 !important;
+        /* Ensure it's above other elements */
+      }
+
+      /* Adjust the panel scaling */
+      .datepicker-panel {
+        transform: none;
+        /* Remove the previous scale transformation */
+        width: 100%;
+      }
+
+      /* Adjust individual date cells */
+      .datepicker-panel>ul>li {
+        width: 40px;
+        height: 40px;
+        padding-top: 8px;
+      }
+    }
+
+    /* Add a backdrop when calendar is open on mobile/tablet */
+    .datepicker-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9998;
+    }
+
+
+    .date-input::placeholder {
+      color: #999;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: #e0e0e0; /* Keep the same border color when focused */
+      box-shadow: none; /* Remove any focus shadow */
+    }
+
+    /* Remove webkit default focus styles */
+    .date-input:focus-visible {
+      outline: none;
+    }
+  </style>
+</body>
+
+</html>
