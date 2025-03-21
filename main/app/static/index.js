@@ -1,3 +1,6 @@
+// Add this at the top of the file, before any functions
+let isDragging = false;
+
 // Step 2: Refactor the animation system first (safest change)
 const AnimationSystem = {
     fadeIn(element, delay = 0) {
@@ -89,6 +92,30 @@ function initializeSortable() {
     const lists = document.querySelectorAll('.list');
     let pressTimer = null;
     let isDragging = false;
+    
+    // Add click handler to tasks
+    document.querySelectorAll('.list-item').forEach(item => {
+        item.addEventListener('mousedown', function(e) {
+            pressTimer = setTimeout(() => {
+                isDragging = true;
+            }, 150); // Wait 150ms before allowing drag
+        });
+
+        item.addEventListener('mouseup', function(e) {
+            clearTimeout(pressTimer);
+            if (!isDragging) {
+                // This was a click, not a drag
+                this.click(); // Simplified since the item itself is now the trigger
+            }
+            isDragging = false;
+        });
+
+        item.addEventListener('selectstart', function(e) {
+            if (isDragging) {
+                e.preventDefault();
+            }
+        });
+    });
     
     lists.forEach(list => {
         new Sortable(list, {
@@ -662,16 +689,31 @@ document.querySelectorAll('.list_header-title').forEach(title => {
 
 
 function initializeTaskEdit() {
-    document.querySelectorAll('.list-item').forEach(task => {
-        task.addEventListener('click', function() {
-            if (!isDragging) {  // Only open popup if not dragging
+    if (window.taskEditInitialized) return;
+    window.taskEditInitialized = true;
+
+    const tasks = document.querySelectorAll('.list-item');
+    
+    tasks.forEach(task => {
+        const newTask = task.cloneNode(true);
+        task.parentNode.replaceChild(newTask, task);
+        
+        newTask.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (!isDragging) {
                 const taskId = this.dataset.taskId;
                 const editMode = this.dataset.editMode === 'true';
                 
                 if (editMode) {
-                    // Open edit popup
+                    const taskName = this.querySelector('.list_item-title').textContent;
                     const popup = document.querySelector('[data-popup="edit-task"]');
+                    
                     if (popup) {
+                        const nameField = popup.querySelector('.edit-task-popup_task-name');
+                        nameField.textContent = taskName;
+                        nameField.classList.add('has-content');
+                        
                         popup.dataset.currentTask = taskId;
                         popup.style.display = 'block';
                         gsap.fromTo(popup, 
@@ -685,17 +727,10 @@ function initializeTaskEdit() {
     });
 }
 
-
-
-
-
-
-
-
-
-
-
-
+// Make sure the function is called after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTaskEdit();
+});
 
 //project selection method
     function initializeProjectDropdown() {
