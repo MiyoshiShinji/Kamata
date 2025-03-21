@@ -90,30 +90,6 @@ function initializeSortable() {
     let pressTimer = null;
     let isDragging = false;
     
-    // Add click handler to tasks
-    document.querySelectorAll('.list-item').forEach(item => {
-        item.addEventListener('mousedown', function(e) {
-            pressTimer = setTimeout(() => {
-                isDragging = true;
-            }, 150); // Wait 150ms before allowing drag
-        });
-
-        item.addEventListener('mouseup', function(e) {
-            clearTimeout(pressTimer);
-            if (!isDragging) {
-                // This was a click, not a drag
-                this.click(); // Simplified since the item itself is now the trigger
-            }
-            isDragging = false;
-        });
-
-        item.addEventListener('selectstart', function(e) {
-            if (isDragging) {
-                e.preventDefault();
-            }
-        });
-    });
-    
     lists.forEach(list => {
         new Sortable(list, {
             group: 'tasks',
@@ -685,6 +661,31 @@ document.querySelectorAll('.list_header-title').forEach(title => {
 });
 
 
+function initializeTaskEdit() {
+    document.querySelectorAll('.list-item').forEach(task => {
+        task.addEventListener('click', function() {
+            if (!isDragging) {  // Only open popup if not dragging
+                const taskId = this.dataset.taskId;
+                const editMode = this.dataset.editMode === 'true';
+                
+                if (editMode) {
+                    // Open edit popup
+                    const popup = document.querySelector('[data-popup="edit-task"]');
+                    if (popup) {
+                        popup.dataset.currentTask = taskId;
+                        popup.style.display = 'block';
+                        gsap.fromTo(popup, 
+                            { opacity: 0 },
+                            { opacity: 1, duration: 0.5, ease: 'power2.out' }
+                        );
+                    }
+                }
+            }
+        });
+    });
+}
+
+
 
 
 
@@ -911,4 +912,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeStatusCycling();
     initializePriorityCycling();
     initializeProjectDropdown();
+    initializeTaskEdit();
 });

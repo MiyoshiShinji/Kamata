@@ -17,7 +17,7 @@
     name="description">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
-  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/css/kamata.webflow.3dc166657.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/css/kamata.webflow.11efcc0e5.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
@@ -167,6 +167,8 @@
     </div>
     <div class="w-layout-grid list-wrap">
       <div id="w-node-_60766be2-e2cf-9137-be7b-4c8f2ddb67e6-c64eea3b" class="list-group">
+
+        {% csrf_token %}
         <!-- First list (Recently assigned) -->
         <div data-list="1" class="list">
           <div class="list-header">
@@ -184,7 +186,8 @@
               <div data-list="1" class="explanation-box tooltip-list_header-moreactions-hover">
                 <div>More actions</div>
               </div>
-              <div data-explains="tooltip-list_header-addtask-hover" data-list="1" class="button list_header-addtask" data-popup-trigger="create-task">
+              <div data-explains="tooltip-list_header-addtask-hover" data-list="1" class="button list_header-addtask"
+                data-popup-trigger="create-task">
                 <img
                   src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce43acba85b0a643ce68e9_addTask.icon.svg"
                   loading="lazy" alt="" class="img _10x10">
@@ -209,11 +212,9 @@
             </div>
           </div>
           {% for task in tasks|filter_by_list:1 %}
-          <div data-item="{{ task.id }}"
-            data-popup-trigger="create-task"
-            data-task-id="{{ task.id }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}"
             data-edit-mode="true"
-            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content" >
+            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content">
             <div class="flex gap5">
               <div class="button icon"><img
                   src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce36a7adb52702c2506ede_task.icon.svg"
@@ -251,7 +252,7 @@
               <div data-list="{{ list.id }}" class="explanation-box tooltip-list_header-moreactions-hover">
                 <div>More actions</div>
               </div>
-              <div data-explains="tooltip-list_header-addtask-hover" data-list="{{ list.id }}" 
+              <div data-explains="tooltip-list_header-addtask-hover" data-list="{{ list.id }}"
                 class="button list_header-addtask" data-popup-trigger="create-task">
                 <img
                   src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce43acba85b0a643ce68e9_addTask.icon.svg"
@@ -280,8 +281,9 @@
           </div>
 
           {% for task in tasks|filter_by_list:list.id %}
-          <div data-item="{{ task.id }}"
-            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}" >
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}"
+            data-edit-mode="true"
+            class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
             <div class="flex gap5">
               <div class="button icon"><img
                   src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce36a7adb52702c2506ede_task.icon.svg"
@@ -299,7 +301,8 @@
           </div>
           {% endfor %}
           <div class="list_empty" {% if tasks|filter_by_list:list.id %}style="display: none" {% endif %}>
-            <div class="button list_empty-addtask" data-popup-trigger="create-task" data-list="{{ list.id }}">+ Add task</div>
+            <div class="button list_empty-addtask" data-popup-trigger="create-task" data-list="{{ list.id }}">+ Add task
+            </div>
           </div>
         </div>
         {% endif %}
@@ -352,7 +355,7 @@
       <div data-popup-close="delete-list" class="button close delete-list-popup_close-button"></div>
     </div>
   </div>
-  
+
   <div class="create-task-popup" data-popup="create-task">
     <div class="w-layout-grid create-task-popup-wrap">
       <div id="w-node-ddeec698-e89c-e001-79ee-869980d03e62-c64eea3b" class="crate-task-popup-content">
@@ -360,7 +363,8 @@
           <div class="w-layout-grid create-task-popup-grid">
             <div class="button close create-task-popup_close-button" data-popup-close="create-task"></div>
             <div class="flex padding-top-5 border-top">
-              <div class="create-task-popup_task-name" data-task-field="name" contenteditable="false">Add task name...</div>
+              <div class="create-task-popup_task-name" data-task-field="name" contenteditable="false">Add task name...
+              </div>
             </div>
             <div class="w-layout-grid create-task-popup_tags-wrap">
               <div id="w-node-_5f9f4d5b-c393-928a-554c-baf069a2c697-c64eea3b" class="create-task-popup_tags">
@@ -426,7 +430,7 @@
               <div id="w-node-_7131aef5-f52b-3b41-3c79-77a1ad383766-c64eea3b" class="flex padding-left-5">
                 <div class="button user-profile cursor-block"></div>
               </div>
-              
+
               <div id="w-node-be135ac1-0fae-f4d3-e4fa-3e0f2529cc7a-c64eea3b">
                 <div class="project-dropdown-container">
                   <div class="project-dropdown-header" data-dropdown-trigger>
@@ -449,7 +453,10 @@
             <div class="create-task-popup_description">
               <div class="flex padding-left-5">Description</div>
               <div class="create-task-popup_description-area-wrap">
-                <div class="create-task-popup_description-area" contenteditable="false">Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.</div>
+                <div class="create-task-popup_description-area" contenteditable="false">Design a sleek landing page for
+                  a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a
+                  car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.
+                </div>
               </div>
             </div>
             <div id="w-node-_16707b88-6c8a-e22d-49c1-bfe1deb1c8ab-c64eea3b" class="flex justify-end gap5">
@@ -458,6 +465,135 @@
               </div>
               <div class="button create-task-popup_create-task-button" data-popup-action="create-task">
                 <div>Create task</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div data-popup="edit-task" class="edit-task-popup">
+    <div class="w-layout-grid edit-task-popup-wrap">
+      <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c1d-c64eea3b" class="edit-task-popup-content">
+        <div class="edit-task-popup-grid-wrap">
+          <div class="w-layout-grid edit-task-popup-grid">
+            <div data-popup-close="edit-task" class="button close edit-task-popup_close-button"></div>
+            <div class="flex direction-vertical gap-5">
+              <div class="flex y-center gap5">
+                <div class="popup-task-complete-button">
+                  <div class="img-wrap _20x20"><img
+                      src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ce36a7adb52702c2506ede_task.icon.svg"
+                      loading="lazy" alt=""></div>
+                  <div>Mark as complete</div>
+                </div>
+                <div class="popup-task-delete-button"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67cfc412081bd852467be8d0_trashcan.icon%20(3).svg"
+                    loading="lazy" alt=""></div>
+              </div>
+              <div data-task-field="name" contenteditable="false" class="edit-task-popup_task-name has-content">Design
+                Homepage Wireframe...</div>
+            </div>
+            <div class="w-layout-grid edit-task-popup_tags-wrap">
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c25-c64eea3b" class="edit-task-popup_tags">
+                <div class="img-wrap _20x20"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6218463b1cd3e6799b7_add-task-popup_status.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Status</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c2a-c64eea3b" class="flex y-center">
+                <div data-status-value="4" class="list_item-status not-selected">
+                  <div class="decor _7"></div>
+                  <div class="create-task-popup_status inner-text">Null</div>
+                </div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c2f-c64eea3b" class="edit-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6226bf04d6f37681c45_add-task-popup_priority.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Priority</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c34-c64eea3b" class="flex y-center">
+                <div data-priority-value="4" class="list_item-priority not-selected">
+                  <div class="decor _7"></div>
+                  <div class="create-task-popup_priority inner-text">Null</div>
+                </div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c39-c64eea3b" class="edit-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67da0c9d4c026a0f76eeff7a_add-task-popup_project.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Project</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c5d-c64eea3b">
+                <div data-selected-project-id="" class="project-dropdown-container">
+                  <div data-dropdown-trigger="" class="project-dropdown-header">
+                    <div>No project</div>
+                    <div class="project-dropdown-list">
+                      <div data-project-id="null" class="project-option">
+                        <div>No project</div>
+                      </div>
+                      <div data-project-id="null" class="project-option">
+                        <div>No project</div>
+                      </div>
+                      <div data-project-id="null" class="project-option">
+                        <div>No project</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c3e-c64eea3b" class="edit-task-popup_tags">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6212b096d738deca3a9_add-task-popup_calendar.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Due Date</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c43-c64eea3b" class="date-inputs-container">
+                <div class="date-input">
+                  <div>2020/20/20</div>
+                </div>
+                <div class="date-input">
+                  <div>2020/20/20</div>
+                </div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c4a-c64eea3b" class="edit-task-popup_tags cursor-block">
+                <div class="img-wrap _20x20"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c621c68248d973b06b51_add-task-popup_tag.icon.svg"
+                    loading="lazy" alt=""></div>
+                <div>Tags</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c4f-c64eea3b"
+                class="flex y-center gap5 direction-stackdown cursor-block">
+                <div class="delete-me_tags">Task</div>
+                <div class="delete-me_tags">Wireframe</div>
+                <div class="delete-me_tags">Homepage</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c56-c64eea3b" class="edit-task-popup_tags cursor-block">
+                <div class="img-wrap _20x20 opacity-70"><img
+                    src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c621cc0ca4ec47292e58_add-task-popup_assignees.svg"
+                    loading="lazy" alt=""></div>
+                <div>Assignees</div>
+              </div>
+              <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c5b-c64eea3b" class="flex padding-left-5">
+                <div class="button user-profile cursor-block"></div>
+              </div>
+            </div>
+            <div class="edit-task-popup_description">
+              <div class="flex padding-left-5">Description</div>
+              <div class="create-task-popup_description-area-wrap">
+                <div contenteditable="false" class="create-task-popup_description-area has-content">Design a sleek
+                  landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive
+                  elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across
+                  all devices.</div>
+              </div>
+            </div>
+            <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c72-c64eea3b" class="flex justify-end gap5">
+              <div data-popup-close="edit-task" class="button edit-task-popup_cancel-button">
+                <div>Cancel</div>
+              </div>
+              <div data-popup-action="edit-task" class="button edit-task-popup_create-task-button">
+                <div>Save changes</div>
               </div>
             </div>
           </div>
@@ -758,8 +894,10 @@
 
     .date-input:focus {
       outline: none;
-      border-color: #e0e0e0; /* Keep the same border color when focused */
-      box-shadow: none; /* Remove any focus shadow */
+      border-color: #e0e0e0;
+      /* Keep the same border color when focused */
+      box-shadow: none;
+      /* Remove any focus shadow */
     }
 
     /* Remove webkit default focus styles */

@@ -15,7 +15,7 @@
 }
 
 .w-layout-grid.list-item { 
-    cursor: grab;
+    cursor: pointer;
 }
 
 .list_empty {
@@ -23,9 +23,15 @@
 }
 
 .list-item {
-    cursor: grab !important;
+    cursor: pointer !important;
     position: relative;
     z-index: 1;
+}
+
+/* Dragging state */
+.list-item.task-chosen,
+.list-item.task-drag {
+    cursor: grabbing !important;
 }
 
 .list-item.animating {
