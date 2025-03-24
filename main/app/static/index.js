@@ -398,14 +398,12 @@ function makeEditable(element, options = {}) {
             
             if (!newText && clearOnEdit) {
                 this.textContent = currentText;
-                // Remove the has-content class if reverting to default text
-                if (this.classList.contains('create-task-popup_task-name')) {
+                if (this.classList.contains('edit-task-popup_task-name')) {
                     this.classList.remove('has-content');
                 }
             } else {
                 this.textContent = newText || defaultText;
-                // Add has-content class if there's user-entered text
-                if (this.classList.contains('create-task-popup_task-name') && newText !== defaultText) {
+                if (this.classList.contains('edit-task-popup_task-name') && newText !== defaultText) {
                     this.classList.add('has-content');
                 }
             }
@@ -428,7 +426,7 @@ function makeEditable(element, options = {}) {
                 }
                 if (e.key === 'Escape') {
                     this.textContent = currentText;
-                    if (this.classList.contains('create-task-popup_task-name')) {
+                    if (this.classList.contains('edit-task-popup_task-name')) {
                         this.classList.remove('has-content');
                     }
                     this.blur();
@@ -577,6 +575,37 @@ function resetTaskPopup() {
     if (endDateInput) endDateInput.value = '';
 }
 
+function resetEditTaskPopup() {
+    const popup = document.querySelector('.edit-task-popup');
+    
+    // Reset task name
+    const taskNameElement = popup.querySelector('.edit-task-popup_task-name');
+    taskNameElement.textContent = 'Add task name...';
+    taskNameElement.classList.remove('has-content', 'error');
+
+    // Reset status
+    const statusElement = popup.querySelector('.list_item-status');
+    statusElement.className = 'list_item-status not-selected';
+    statusElement.querySelector('.create-task-popup_status.inner-text').textContent = 'Null';
+
+    // Reset priority
+    const priorityElement = popup.querySelector('.list_item-priority');
+    priorityElement.className = 'list_item-priority not-selected';
+    priorityElement.querySelector('.create-task-popup_priority.inner-text').textContent = 'Null';
+
+    // Reset project selection
+    const projectContainer = popup.querySelector('.project-dropdown-container');
+    const projectTitleElement = projectContainer.querySelector('[data-project-selection-title]');
+    projectTitleElement.textContent = 'No project';
+    projectContainer.dataset.selectedProjectId = 'null';
+
+    // Reset dates
+    const startDateInput = document.getElementById('taskStartDate');
+    const endDateInput = document.getElementById('taskEndDate');
+    if (startDateInput) startDateInput.value = '';
+    if (endDateInput) endDateInput.value = '';
+}
+
 document.querySelector('[data-popup-action="delete-list"]').addEventListener('click', async function() {
     const popup = document.querySelector('.delete-list-popup');
     const listId = popup.dataset.currentList;
@@ -692,85 +721,190 @@ function initializeTaskEdit() {
     if (window.taskEditInitialized) return;
     window.taskEditInitialized = true;
 
-    const tasks = document.querySelectorAll('.list-item');
-    
-    tasks.forEach(task => {
-        const newTask = task.cloneNode(true);
-        task.parentNode.replaceChild(newTask, task);
-        
-        newTask.addEventListener('click', function(e) {
-            e.stopPropagation();
+    document.addEventListener('click', function(e) {
+        const task = e.target.closest('.list-item');
+        if (!task || !task.dataset.editMode || isDragging) return;
+
+        e.stopPropagation();
+        const popup = document.querySelector('[data-popup="edit-task"]');
+        if (!popup) return;
+
+        // Helper function to update popup elements
+        const updatePopupElement = (popupSelector, taskSelector, className = null) => {
+            const popupElement = popup.querySelector(popupSelector);
+            const taskElement = task.querySelector(taskSelector);
+            if (!popupElement || !taskElement) return;
+
+            if (className) {
+                popupElement.className = taskElement.className;
+            }
             
-            if (!isDragging) {
-                const taskId = this.dataset.taskId;
-                const editMode = this.dataset.editMode === 'true';
-                
-                if (editMode) {
-                    const taskName = this.querySelector('.list_item-title').textContent;
-                    const popup = document.querySelector('[data-popup="edit-task"]');
-                    
-                    if (popup) {
-                        const nameField = popup.querySelector('.edit-task-popup_task-name');
-                        nameField.textContent = taskName;
+            // Copy all data attributes
+            Object.keys(taskElement.dataset).forEach(key => {
+                popupElement.dataset[key] = taskElement.dataset[key];
+            });
+
+            // Update text content if inner-text element exists
+            const innerText = popupElement.querySelector('.inner-text');
+            if (innerText) {
+                innerText.textContent = taskElement.textContent;
+            }
+        };
+
+        // Update task name and make it editable
+        const nameField = popup.querySelector('.edit-task-popup_task-name');
+        if (nameField) {
+            const currentText = task.querySelector('.list_item-title').textContent;
+            nameField.textContent = currentText;
+            nameField.classList.add('has-content');
+            
+            // Initialize editable functionality
+            makeEditable(nameField, {
+                maxLength: 50,
+                saveOnEnter: true,
+                clearOnEdit: true,  // Add this option
+                onSave: (newText) => {
+                    const trimmedText = newText.trim();
+                    if (trimmedText) {
                         nameField.classList.add('has-content');
-                        
-                        popup.dataset.currentTask = taskId;
-                        popup.style.display = 'block';
-                        gsap.fromTo(popup, 
-                            { opacity: 0 },
-                            { opacity: 1, duration: 0.5, ease: 'power2.out' }
-                        );
+                        nameField.textContent = trimmedText;
+                    } else {
+                        nameField.classList.remove('has-content');
+                        nameField.textContent = currentText; // Restore original text if empty
                     }
                 }
+            });
+        }
+
+        // Store task ID
+        popup.dataset.currentTask = task.dataset.taskId;
+
+        // Update status and priority
+        updatePopupElement('.list_item-status', '.list_item-status', true);
+        updatePopupElement('.list_item-priority', '.list_item-priority', true);
+
+        // Update project selection
+        const projectContainer = popup.querySelector('.project-dropdown-container');
+        const taskProjectId = task.dataset.projectId; // Get the task's project ID
+
+        if (projectContainer) {
+            let headerText = projectContainer.querySelector('[data-project-selection-title]');
+            
+            if (!headerText) {
+                // Create the headerText element if it doesn't exist
+                headerText = document.createElement('div');
+                headerText.setAttribute('data-project-selection-title', '');
+                projectContainer.querySelector('.project-dropdown-header').appendChild(headerText);
             }
+
+            if (taskProjectId === 'null' || !taskProjectId) {
+                headerText.textContent = 'No project';
+                projectContainer.dataset.selectedProjectId = 'null';
+            } else {
+                // Find the project option with matching ID
+                const projectOption = popup.querySelector(`.project-option[data-project-id="${taskProjectId}"]`);
+                if (projectOption) {
+                    const projectName = projectOption.querySelector('span').textContent;
+                    headerText.textContent = projectName;
+                    projectContainer.dataset.selectedProjectId = taskProjectId;
+                } else {
+                    headerText.textContent = 'No project';
+                    projectContainer.dataset.selectedProjectId = 'null';
+                }
+            }
+        }
+
+        // Show and animate popup
+        popup.style.display = 'block';
+        gsap.fromTo(popup, 
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5, ease: 'power2.out' }
+        );
+
+        // Initialize interactive elements
+        initializeStatusLoopSelection();
+        initializePriorityLoopSelection();
+        initializeProjectDropdown();
+    });
+}
+
+
+//project selection method
+function handleProjectSelection() {
+    document.querySelectorAll('.project-dropdown-container').forEach(container => {
+        const trigger = container.querySelector('.project-dropdown-header');
+        const list = container.querySelector('.project-dropdown-list');
+        
+        if (trigger.dataset.initialized) return;
+        
+        trigger.dataset.initialized = 'true';
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
+        });
+
+        container.querySelectorAll('.project-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const projectId = option.dataset.projectId;
+                const projectName = option.querySelector('span').textContent;
+                
+                container.querySelector('[data-project-selection-title]').textContent = projectName;
+                container.setAttribute('data-selected-project-id', projectId);
+                list.style.display = 'none';
+            });
         });
     });
 }
 
-// Make sure the function is called after DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initializeTaskEdit();
-});
-
-//project selection method
-    function initializeProjectDropdown() {
-        const dropdownContainers = document.querySelectorAll('.project-dropdown-container');
+function initializeProjectDropdown() {
+    document.querySelectorAll('.project-dropdown-container').forEach(container => {
+        const trigger = container.querySelector('.project-dropdown-header');
+        const list = container.querySelector('.project-dropdown-list');
         
-        dropdownContainers.forEach(container => {
-            const header = container.querySelector('.project-dropdown-header');
-            const list = container.querySelector('.project-dropdown-list');
-            
-            // Clean up old listener by cloning
-            const newHeader = header.cloneNode(true);
-            header.parentNode.replaceChild(newHeader, header);
-            
-            // Add new listener
-            newHeader.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isVisible = list.style.display === 'block';
-                list.style.display = isVisible ? 'none' : 'block';
-            });
-
-            // Handle option selection
-            container.querySelectorAll('.project-option').forEach(option => {
-                option.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const newText = option.querySelector('span').textContent;
-                    newHeader.querySelector('.selected-project-text').textContent = newText;
-                    container.dataset.selectedProjectId = option.dataset.projectId;
-                    list.style.display = 'none';
-                });
-            });
+        if (trigger.dataset.initialized) return;
+        
+        trigger.dataset.initialized = 'true';
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
         });
 
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', () => {
-            dropdownContainers.forEach(container => {
-                const list = container.querySelector('.project-dropdown-list');
+        container.querySelectorAll('.project-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const projectId = option.dataset.projectId;
+                const projectName = option.querySelector('span').textContent;
+                
+                container.querySelector('[data-project-selection-title]').textContent = projectName;
+                container.setAttribute('data-selected-project-id', projectId);
                 list.style.display = 'none';
             });
         });
+    });
+}
+
+function updateProjectSelectionForEditPopup(task) {
+    const popup = document.querySelector('.edit-task-popup');
+    const projectContainer = popup.querySelector('.project-dropdown-container');
+    const taskProjectId = task.dataset.projectId;
+
+    if (projectContainer) {
+        const headerText = projectContainer.querySelector('[data-project-selection-title]');
+        
+        if (taskProjectId && taskProjectId !== 'null') {
+            const projectOption = popup.querySelector(`.project-option[data-project-id="${taskProjectId}"]`);
+            if (projectOption) {
+                const projectName = projectOption.querySelector('span').textContent;
+                headerText.textContent = projectName;
+                projectContainer.dataset.selectedProjectId = taskProjectId;
+            }
+        } else {
+            headerText.textContent = 'No project';
+            projectContainer.dataset.selectedProjectId = 'null';
+        }
     }
+}
 
     // status and priority selection method
     function initializeStatusCycling() {
@@ -810,7 +944,49 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    function initializePriorityCycling() {
+
+    // status and priority selection method
+    function initializeStatusLoopSelection() {
+        const statusStates = [
+            { value: '4', class: '', text: 'Null' },
+            { value: '1', class: 'on_track', text: 'On track' },
+            { value: '2', class: 'at_risk', text: 'At risk' },
+            { value: '3', class: 'off_track', text: 'Off track' }
+        ];
+
+        document.querySelectorAll('.list_item-status').forEach(statusElement => {
+            if (!statusElement.hasAttribute('data-status-loop-selection')) return;
+
+            statusElement.addEventListener('click', function() {
+                // Find current state index based on existing value
+                let currentStateIndex = statusStates.findIndex(state => 
+                    this.dataset.statusValue === state.value
+                );
+                
+                // If not found or at the end, reset to -1 to start from beginning
+                if (currentStateIndex === -1 || currentStateIndex === statusStates.length - 1) {
+                    currentStateIndex = -1;
+                }
+
+                // Move to next state
+                const newState = statusStates[currentStateIndex + 1];
+
+                // Reset all classes first
+                this.className = 'list_item-status not-selected';
+                if (newState.class) {
+                    this.classList.add(newState.class);
+                }
+
+                // Update the data attribute and inner text
+                this.dataset.statusValue = newState.value;
+                const innerTextElement = this.querySelector('.create-task-popup_status.inner-text');
+                if (innerTextElement) {
+                    innerTextElement.textContent = newState.text;
+                }
+            });
+        });
+    }
+    function initializePriorityLoopSelection() {
         const priorityStates = [
             { value: '4', class: '', text: 'Null' },
             { value: '1', class: 'low', text: 'Low' },
@@ -819,21 +995,24 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
 
         document.querySelectorAll('.list_item-priority').forEach(priorityElement => {
-            let currentStateIndex = 0;
+            if (!priorityElement.hasAttribute('data-priority-loop-selection')) return;
 
             priorityElement.addEventListener('click', function() {
-                // Remove all possible priority classes except 'not-selected'
-                priorityStates.forEach(state => {
-                    if (state.class) {
-                        this.classList.remove(state.class);
-                    }
-                });
+                // Find current state index based on existing value
+                let currentStateIndex = priorityStates.findIndex(state => 
+                    this.dataset.priorityValue === state.value
+                );
+                
+                // If not found or at the end, reset to -1 to start from beginning
+                if (currentStateIndex === -1 || currentStateIndex === priorityStates.length - 1) {
+                    currentStateIndex = -1;
+                }
 
-                // Move to next state (or back to start)
-                currentStateIndex = (currentStateIndex + 1) % priorityStates.length;
-                const newState = priorityStates[currentStateIndex];
+                // Move to next state
+                const newState = priorityStates[currentStateIndex + 1];
 
-                // Apply new class (if any) while keeping 'not-selected'
+                // Reset all classes first
+                this.className = 'list_item-priority not-selected';
                 if (newState.class) {
                     this.classList.add(newState.class);
                 }
@@ -865,9 +1044,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get project ID and log it
         const projectContainer = popup.querySelector('.project-dropdown-container');
         const projectId = projectContainer.dataset.selectedProjectId;
-        console.log('Selected Project Container:', projectContainer);
-        console.log('Project ID before sending:', projectId);
-        console.log('Project Container dataset:', projectContainer.dataset);
 
         // Get other values
         const statusElement = popup.querySelector('.list_item-status');
@@ -936,7 +1112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-// Add to your existing initialization code
 document.addEventListener('DOMContentLoaded', () => {
     initializeTooltips();
     initializeSubpageMenus();
@@ -944,8 +1119,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeListTitleEditing();
     initializeAddSection();
     initializePopups();
-    initializeStatusCycling();
-    initializePriorityCycling();
-    initializeProjectDropdown();
+    initializeStatusLoopSelection();
+    initializePriorityLoopSelection();
+    handleProjectSelection();
     initializeTaskEdit();
 });

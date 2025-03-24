@@ -17,7 +17,7 @@
     name="description">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
-  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/css/kamata.webflow.11efcc0e5.css" rel="stylesheet" type="text/css">
+  <link href="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/css/kamata.webflow.e934107b4.css" rel="stylesheet" type="text/css">  
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
@@ -129,7 +129,7 @@
         <div id="w-node-bf4d4b37-0b48-b5dc-f0b7-4b567f8e2c15-c64eea3b" class="decor _5"></div>
         <div id="w-node-_9061b51e-935b-e7ac-d50a-0adf4edb31f2-c64eea3b" class="w-layout-grid topbar_settings">
           <div id="w-node-_9d3733f6-5a80-b591-2cac-dab826e54d6c-c64eea3b" class="addtask-topbar">
-            <div class="button addtask_topbar" data-popup-trigger="create-task">
+            <div class="button addtask_topbar" data-list="1" data-popup-trigger="create-task">
               <div class="icon-wrap width-13"><img
                   src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67ca94cdbc7d433c936e0b57_decor.svg"
                   loading="lazy" alt=""></div>
@@ -224,8 +224,8 @@
               <div class="list_item-title">{{ task.name }}</div>
             </div>
             <div class="flex gap5">
-              <div class="list_item-priority {{ task.priority.priority }}">{{ task.priority.priority }}</div>
-              <div class="list_item-status {{ task.status.status }}">{{ task.status.status }}</div>
+              <div class="list_item-priority {{ task.priority.combo_class }}" data-priority-value="{{ task.priority.id }}">{{ task.priority.priority }}</div>
+              <div class="list_item-status {{ task.status.combo_class }}" data-status-value="{{ task.status.id }}">{{ task.status.status }}</div>
             </div>
             <div class="flex y-center gap5">
               <div class="button user-profile"></div>
@@ -293,8 +293,8 @@
               <div class="list_item-title">{{ task.name }}</div>
             </div>
             <div class="flex gap5">
-              <div class="list_item-priority {{ task.priority.priority }}">{{ task.priority.priority }}</div>
-              <div class="list_item-status {{ task.status.status }}">{{ task.status.status }}</div>
+              <div class="list_item-priority {{ task.priority.combo_class }}" data-priority-value="{{ task.priority.id }}">{{ task.priority.priority }}</div>
+              <div class="list_item-status {{ task.status.combo_class }}" data-status-value="{{ task.status.id }}">{{ task.status.status }}</div>
             </div>
             <div class="flex y-center gap5">
               <div class="button user-profile"></div>
@@ -376,7 +376,7 @@
                 <div>Status</div>
               </div>
               <div id="w-node-a577bcae-624d-2d2d-7cc2-4e6712955500-c64eea3b" class="flex y-center">
-                <div class="list_item-status not-selected" data-status-value="4">
+                <div class="list_item-status not-selected" data-status-loop-selection data-status-value="4">
                   <div class="decor _7"></div>
                   <div class="create-task-popup_status inner-text">Null</div>
                 </div>
@@ -388,7 +388,7 @@
                 <div>Priority</div>
               </div>
               <div id="w-node-cfc57972-fa13-2070-0a55-0d294dfc8925-c64eea3b" class="flex y-center">
-                <div class="list_item-priority not-selected" data-priority-value="4">
+                <div class="list_item-priority not-selected" data-priority-loop-selection data-priority-value="4">
                   <div class="decor _7"></div>
                   <div class="create-task-popup_priority inner-text">Null</div>
                 </div>
@@ -436,7 +436,7 @@
               <div id="w-node-be135ac1-0fae-f4d3-e4fa-3e0f2529cc7a-c64eea3b">
                 <div class="project-dropdown-container">
                   <div class="project-dropdown-header" data-dropdown-trigger>
-                    <span class="selected-project-text">No project</span>
+                    <span data-project-selection-title>No project</span>
                   </div>
                   <div class="project-dropdown-list" style="display: none;">
                     <div class="project-option" data-project-id="null">
@@ -504,7 +504,7 @@
                 <div>Status</div>
               </div>
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c2a-c64eea3b" class="flex y-center">
-                <div data-status-value="4" class="list_item-status not-selected">
+                <div data-status-loop-selection data-status-value="4" class="list_item-status not-selected">
                   <div class="decor _7"></div>
                   <div class="create-task-popup_status inner-text">Null</div>
                 </div>
@@ -516,11 +516,13 @@
                 <div>Priority</div>
               </div>
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c34-c64eea3b" class="flex y-center">
-                <div data-priority-value="4" class="list_item-priority not-selected">
+                <div data-priority-loop-selection data-priority-value="4" class="list_item-priority not-selected">
                   <div class="decor _7"></div>
                   <div class="create-task-popup_priority inner-text">Null</div>
                 </div>
               </div>
+              
+              <!--Projects Dropdown-->
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c39-c64eea3b" class="edit-task-popup_tags">
                 <div class="img-wrap _20x20 opacity-70"><img
                     src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67da0c9d4c026a0f76eeff7a_add-task-popup_project.icon.svg"
@@ -528,23 +530,28 @@
                 <div>Project</div>
               </div>
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c5d-c64eea3b">
-                <div data-selected-project-id="" class="project-dropdown-container">
+                <div data-project-id="{{ task.project.id }}" class="project-dropdown-container">
                   <div data-dropdown-trigger="" class="project-dropdown-header">
-                    <div>No project</div>
+                    <div data-project-selection-title>No project</div>
                     <div class="project-dropdown-list">
                       <div data-project-id="null" class="project-option">
                         <div>No project</div>
                       </div>
-                      <div data-project-id="null" class="project-option">
-                        <div>No project</div>
+
+                      <!-- Dynamic projects -->
+                      {% for project in projects %}
+                      <div class="project-option" data-project-id="{{ project.id }}">
+                          <span>{{ project.name }}</span>
                       </div>
-                      <div data-project-id="null" class="project-option">
-                        <div>No project</div>
-                      </div>
+                      {% endfor %}
+
+                      
                     </div>
                   </div>
                 </div>
               </div>
+              
+              
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c3e-c64eea3b" class="edit-task-popup_tags">
                 <div class="img-wrap _20x20 opacity-70"><img
                     src="https://cdn.prod.website-files.com/67aeea944d589896c64ee9d5/67d8c6212b096d738deca3a9_add-task-popup_calendar.icon.svg"

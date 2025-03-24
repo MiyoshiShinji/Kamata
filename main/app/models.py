@@ -25,10 +25,12 @@ class Task(models.Model):
 
 class Priority(models.Model):
     priority = models.CharField(max_length=10, null=True, blank=True)
+    combo_class = models.CharField(max_length=10, null=True, blank=True)
 
 
 class Status(models.Model):
     status = models.CharField(max_length=10, null=True, blank=True)
+    combo_class = models.CharField(max_length=10, null=True, blank=True)
 
     
 class List(models.Model):

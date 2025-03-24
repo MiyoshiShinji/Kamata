@@ -1,0 +1,14 @@
+{
+    // Disable other AI extensions
+    "augmentcodeai.enable": false,
+
+    // Enable GitHub Copilot for all file types
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": true
+    },
+    // Ensure Copilot is the default AI support
+    "github.copilot.default": true
+}
