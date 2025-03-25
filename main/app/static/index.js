@@ -131,7 +131,6 @@ function initializeSortable() {
             
             onStart: function(evt) {
                 isDragging = true;
-                console.log('Drag started for task:', evt.item);
             },
             
             onEnd: function(evt) {
@@ -139,14 +138,11 @@ function initializeSortable() {
                 const newListId = evt.to.dataset.list;
                 const newIndex = evt.newIndex;
                 
-                console.log('Drag ended for task:', taskId, 'New list ID:', newListId, 'New index:', newIndex);
-                
                 updateTaskPosition(taskId, newListId, newIndex);
                 updateListsUI();
                 
                 setTimeout(() => {
                     isDragging = false;
-                    console.log('Drag state reset');
                 }, 0);
             }
         });
@@ -765,7 +761,8 @@ function initializeTaskEdit() {
                 projectContainer.dataset.selectedProjectId = 'null';
             } else {
                 headerText.textContent = taskProjectName;
-                projectContainer.dataset.selectedProjectId = task.dataset.projectId;
+                projectContainer.dataset.selectedProjectId = task.dataset.itemProjectId;
+                
             }
         }
 
@@ -778,6 +775,9 @@ function initializeTaskEdit() {
 
         const dataInputStartDate = popup.querySelector('[data-data-input-startdate]');
         const dataInputDeadline = popup.querySelector('[data-data-input-deadline]')
+        console.log(dataInputStartDate);
+        console.log(dataInputDeadline);
+        console.log(task);
         if (dataInputStartDate){
             dataInputStartDate.textContent = task.dataset.itemStartDate;
         }
@@ -1042,8 +1042,6 @@ function createTask(){
             start_date: startDate,
             end_date: endDate
         };
-        
-        console.log('Request body:', requestBody);
 
         try {
             const response = await fetch('/api/create-task/', {
@@ -1062,7 +1060,6 @@ function createTask(){
             }
 
             const data = await response.json();
-            console.log('Response from server:', data);
             
             if (data.status === 'success') {
                 if (!data.task.project_id && projectId) {
@@ -1084,6 +1081,59 @@ function createTask(){
     });
 }
 
+function commitTaskDataChange(){
+    document.querySelector('[data-popup-action="edit-task"]').addEventListener('click', async function(e){
+        
+        const editPopup = document.querySelector('.edit-task-popup');
+
+        //Task ID
+        const currentTaskId = editPopup.dataset.currentTask
+        console.log('Task Id:' , currentTaskId);
+        const currentTask = document.querySelector(`[data-item="${currentTaskId}"]`);
+
+        //List ID
+        const currentList = currentTask.closest("[data-list]");
+        console.log('List Id:' , currentList);
+
+        const descriptionElement = editPopup.querySelector('[data-edit-popup="description"]');
+        console.log('descriptionDIV' ,descriptionElement);
+
+        //Description
+        const description = descriptionElement.textContent;
+        console.log(description);
+        
+
+        const projectContainer = editPopup.querySelector('.project-dropdown-container');
+
+        //Project ID
+        let projectId = projectContainer.dataset.selectedProjectId;
+        if (projectId === "null"){
+            projectId = null;
+        }
+
+        console.log('projectId:' , projectId);
+
+        const statusElement = editPopup.querySelector('.list_item-status');
+        const priorityElement = editPopup.querySelector('.list_item-priority');
+        const statusValue = parseInt(statusElement.dataset.statusValue) || 4;
+        const priorityValue = parseInt(priorityElement.dataset.priorityValue) || 4;
+        const startDateInput = document.getElementById('taskStartDate');
+        const endDateInput = document.getElementById('taskEndDate');
+        const startDate = startDateInput.value || null;
+        const endDate = endDateInput.value || null;
+
+        console.log(statusValue);
+        console.log(priorityValue);
+        console.log(startDate);
+        console.log(endDate);
+
+        
+        
+
+        
+    })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initializeTooltips();
     initializeSubpageMenus();
@@ -1096,4 +1146,5 @@ document.addEventListener('DOMContentLoaded', () => {
     handleProjectSelection();
     initializeTaskEdit();
     createTask();
+    commitTaskDataChange();
 });

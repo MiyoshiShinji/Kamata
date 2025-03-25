@@ -214,7 +214,7 @@
           
           <!-- First List-->
           {% for task in tasks|filter_by_list:1 %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content">
             <div class="flex gap5">
@@ -283,7 +283,7 @@
           </div>
 
           {% for task in tasks|filter_by_list:list.id %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
             <div class="flex gap5">
@@ -559,12 +559,8 @@
                 <div>Due Date</div>
               </div>
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c43-c64eea3b" class="date-inputs-container">
-                <div class="date-input">
-                  <div data-data-input-startdate>2020/20/20</div>
-                </div>
-                <div class="date-input">
-                  <div data-data-input-deadline>2020/20/20</div>
-                </div>
+                <input id="taskStartDate" data-data-input-startdate class="date-input"  autocomplete="off">
+                <input id="taskEndDate" data-data-input-deadline class="date-input"  autocomplete="off">
               </div>
               <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c4a-c64eea3b" class="edit-task-popup_tags cursor-block">
                 <div class="img-wrap _20x20"><img
