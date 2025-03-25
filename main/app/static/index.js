@@ -96,10 +96,8 @@ function initializeSortable() {
     // Add click handler to tasks
     document.querySelectorAll('.list-item').forEach(item => {
         item.addEventListener('mousedown', function(e) {
-            console.log('mousedown event on:', this);
             pressTimer = setTimeout(() => {
                 isDragging = true;
-                console.log('Dragging started');
             }, 150); // Wait 150ms before allowing drag
         });
 
@@ -107,11 +105,9 @@ function initializeSortable() {
             clearTimeout(pressTimer);
             if (!isDragging) {
                 // This was a click, not a drag
-                console.log('Click event on:', this);
                 this.click(); // Simplified since the item itself is now the trigger
             }
             isDragging = false;
-            console.log('mouseup event on:', this, 'isDragging:', isDragging);
         });
 
         item.addEventListener('selectstart', function(e) {
@@ -773,6 +769,21 @@ function initializeTaskEdit() {
             }
         }
 
+        const descriptionField = popup.querySelector('[data-edit-popup="description"]');
+        if (descriptionField.textContent === 'None') {
+            descriptionField.textContent = 'Null';
+        }else{
+            descriptionField.textContent = task.dataset.itemDescription;
+        }
+
+        const dataInputStartDate = popup.querySelector('[data-data-input-startdate]');
+        const dataInputDeadline = popup.querySelector('[data-data-input-deadline]')
+        if (dataInputStartDate){
+            dataInputStartDate.textContent = task.dataset.itemStartDate;
+        }
+        if (dataInputDeadline){
+            dataInputDeadline.textContent = task.dataset.itemDeadline;
+        }
         // Show and animate popup
         popup.style.display = 'block';
         gsap.fromTo(popup, 
@@ -986,7 +997,8 @@ function updateProjectSelectionForEditPopup(task) {
         });
     }
 
-    // task creation method
+function createTask(){
+
     document.querySelector('[data-popup-action="create-task"]').addEventListener('click', async function(e) {
         e.preventDefault();
         const popup = document.querySelector('.create-task-popup');
@@ -1070,6 +1082,7 @@ function updateProjectSelectionForEditPopup(task) {
             // You might want to show an error message to the user here
         }
     });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeTooltips();
@@ -1082,4 +1095,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePriorityLoopSelection();
     handleProjectSelection();
     initializeTaskEdit();
+    createTask();
 });
