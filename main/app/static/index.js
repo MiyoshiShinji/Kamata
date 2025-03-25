@@ -96,8 +96,10 @@ function initializeSortable() {
     // Add click handler to tasks
     document.querySelectorAll('.list-item').forEach(item => {
         item.addEventListener('mousedown', function(e) {
+            console.log('mousedown event on:', this);
             pressTimer = setTimeout(() => {
                 isDragging = true;
+                console.log('Dragging started');
             }, 150); // Wait 150ms before allowing drag
         });
 
@@ -105,9 +107,11 @@ function initializeSortable() {
             clearTimeout(pressTimer);
             if (!isDragging) {
                 // This was a click, not a drag
+                console.log('Click event on:', this);
                 this.click(); // Simplified since the item itself is now the trigger
             }
             isDragging = false;
+            console.log('mouseup event on:', this, 'isDragging:', isDragging);
         });
 
         item.addEventListener('selectstart', function(e) {
@@ -131,6 +135,7 @@ function initializeSortable() {
             
             onStart: function(evt) {
                 isDragging = true;
+                console.log('Drag started for task:', evt.item);
             },
             
             onEnd: function(evt) {
@@ -138,11 +143,14 @@ function initializeSortable() {
                 const newListId = evt.to.dataset.list;
                 const newIndex = evt.newIndex;
                 
+                console.log('Drag ended for task:', taskId, 'New list ID:', newListId, 'New index:', newIndex);
+                
                 updateTaskPosition(taskId, newListId, newIndex);
                 updateListsUI();
                 
                 setTimeout(() => {
                     isDragging = false;
+                    console.log('Drag state reset');
                 }, 0);
             }
         });
@@ -489,11 +497,7 @@ function initializePopups() {
                     onComplete: () => {
                         popup.style.display = 'none';
                         // Reset based on popup type
-                        if (popupName === 'create-task') {
-                            resetTaskPopup();
-                        } else if (popupName === 'edit-task') {
-                            resetEditTaskPopup();
-                        }
+                        resetTaskPopup();
                     }
                 });
             }
@@ -513,11 +517,7 @@ function initializePopups() {
                     onComplete: () => {
                         visiblePopup.style.display = 'none';
                         // Reset based on popup type
-                        if (popupName === 'create-task') {
-                            resetTaskPopup();
-                        } else if (popupName === 'edit-task') {
-                            resetEditTaskPopup();
-                        }
+                        resetTaskPopup();
                     }
                 });
             }
@@ -536,11 +536,7 @@ function initializePopups() {
                     onComplete: () => {
                         popup.style.display = 'none';
                         // Reset based on popup type
-                        if (popupName === 'create-task') {
-                            resetTaskPopup();
-                        } else if (popupName === 'edit-task') {
-                            resetEditTaskPopup();
-                        }
+                        resetTaskPopup();
                     }
                 });
             }
@@ -568,43 +564,21 @@ function resetTaskPopup() {
     priorityElement.className = 'list_item-priority not-selected';
     priorityElement.querySelector('.create-task-popup_priority.inner-text').textContent = 'Null';
 
-    // Reset dates
-    const startDateInput = document.getElementById('taskStartDate');
-    const endDateInput = document.getElementById('taskEndDate');
-    if (startDateInput) startDateInput.value = '';
-    if (endDateInput) endDateInput.value = '';
-}
-
-function resetEditTaskPopup() {
-    const popup = document.querySelector('.edit-task-popup');
-    
-    // Reset task name
-    const taskNameElement = popup.querySelector('.edit-task-popup_task-name');
-    taskNameElement.textContent = 'Add task name...';
-    taskNameElement.classList.remove('has-content', 'error');
-
-    // Reset status
-    const statusElement = popup.querySelector('.list_item-status');
-    statusElement.className = 'list_item-status not-selected';
-    statusElement.querySelector('.create-task-popup_status.inner-text').textContent = 'Null';
-
-    // Reset priority
-    const priorityElement = popup.querySelector('.list_item-priority');
-    priorityElement.className = 'list_item-priority not-selected';
-    priorityElement.querySelector('.create-task-popup_priority.inner-text').textContent = 'Null';
-
     // Reset project selection
     const projectContainer = popup.querySelector('.project-dropdown-container');
     const projectTitleElement = projectContainer.querySelector('[data-project-selection-title]');
     projectTitleElement.textContent = 'No project';
     projectContainer.dataset.selectedProjectId = 'null';
 
+
     // Reset dates
     const startDateInput = document.getElementById('taskStartDate');
     const endDateInput = document.getElementById('taskEndDate');
     if (startDateInput) startDateInput.value = '';
     if (endDateInput) endDateInput.value = '';
 }
+
+
 
 document.querySelector('[data-popup-action="delete-list"]').addEventListener('click', async function() {
     const popup = document.querySelector('.delete-list-popup');
@@ -785,32 +759,17 @@ function initializeTaskEdit() {
 
         // Update project selection
         const projectContainer = popup.querySelector('.project-dropdown-container');
-        const taskProjectId = task.dataset.projectId; // Get the task's project ID
+        const taskProjectName = task.dataset.itemProjectName; // Get the task's project ID
 
         if (projectContainer) {
             let headerText = projectContainer.querySelector('[data-project-selection-title]');
-            
-            if (!headerText) {
-                // Create the headerText element if it doesn't exist
-                headerText = document.createElement('div');
-                headerText.setAttribute('data-project-selection-title', '');
-                projectContainer.querySelector('.project-dropdown-header').appendChild(headerText);
-            }
 
-            if (taskProjectId === 'null' || !taskProjectId) {
+            if (!taskProjectName || taskProjectName === 'null') {
                 headerText.textContent = 'No project';
                 projectContainer.dataset.selectedProjectId = 'null';
             } else {
-                // Find the project option with matching ID
-                const projectOption = popup.querySelector(`.project-option[data-project-id="${taskProjectId}"]`);
-                if (projectOption) {
-                    const projectName = projectOption.querySelector('span').textContent;
-                    headerText.textContent = projectName;
-                    projectContainer.dataset.selectedProjectId = taskProjectId;
-                } else {
-                    headerText.textContent = 'No project';
-                    projectContainer.dataset.selectedProjectId = 'null';
-                }
+                headerText.textContent = taskProjectName;
+                projectContainer.dataset.selectedProjectId = task.dataset.projectId;
             }
         }
 

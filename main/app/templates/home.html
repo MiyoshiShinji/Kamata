@@ -214,7 +214,7 @@
           
           <!-- First List-->
           {% for task in tasks|filter_by_list:1 %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-name="{{ task.project.name }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content">
             <div class="flex gap5">
@@ -283,7 +283,7 @@
           </div>
 
           {% for task in tasks|filter_by_list:list.id %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-name="{{ task.project.name }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
             <div class="flex gap5">
