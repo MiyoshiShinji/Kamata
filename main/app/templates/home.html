@@ -455,7 +455,7 @@
             <div class="create-task-popup_description">
               <div class="flex padding-left-5">Description</div>
               <div class="create-task-popup_description-area-wrap">
-                <div class="create-task-popup_description-area" contenteditable="false">Design a sleek landing page for
+                <div class="create-task-popup_description-area" contenteditable="false" data-popup-description>Design a sleek landing page for
                   a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a
                   car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.
                 </div>
@@ -587,7 +587,7 @@
             <div class="edit-task-popup_description">
               <div class="flex padding-left-5">Description</div>
               <div class="create-task-popup_description-area-wrap">
-                <div contenteditable="false" class="create-task-popup_description-area has-content" data-edit-popup="description">Design a sleek
+                <div contenteditable="false" class="create-task-popup_description-area has-content" data-popup-description>Design a sleek
                   landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive
                   elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across
                   all devices.</div>
@@ -613,35 +613,46 @@
   <script src="https://fengyuanchen.github.io/datepicker/js/datepicker.js"></script>
 
   <script>
-    $(document).ready(function () {
-      // Initialize datepickers
-      $('#taskStartDate, #taskEndDate').datepicker({
-        format: 'yyyy/mm/dd',
-        autoHide: true,
-        zIndex: 2048,
-        container: 'body', // Change container to body for better positioning
-        show: function () {
-          // Add backdrop when calendar opens on mobile/tablet
-          if (window.innerWidth <= 1024) {
-            $('body').append('<div class="datepicker-backdrop"></div>');
-          }
-        },
-        hide: function () {
-          // Remove backdrop when calendar closes
-          $('.datepicker-backdrop').remove();
-        }
-      });
-
-      // Make inputs readonly on mobile
-      if (window.innerWidth < 768) {
-        $('.date-input').attr('readonly', 'readonly');
+$(document).ready(function () {
+  // Initialize datepickers
+  $('#taskStartDate, #taskEndDate').datepicker({
+    format: 'yyyy/mm/dd',
+    autoHide: true,
+    zIndex: 2048,
+    container: 'body', // Change container to body for better positioning
+    show: function () {
+      // Add backdrop when calendar opens on mobile/tablet
+      if (window.innerWidth <= 1024) {
+        $('body').append('<div class="datepicker-backdrop"></div>');
       }
+    },
+    hide: function () {
+      // Remove backdrop when calendar closes
+      $('.datepicker-backdrop').remove();
+    },
+    pick: function (event) {
+      // Update the input field's placeholder with the selected date
+      const input = $(this).data('datepicker').$element;
+      const selectedDate = new Date(event.date);
+      const year = selectedDate.getFullYear();
+      const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2); // Months are zero-based
+      const day = ('0' + selectedDate.getDate()).slice(-2);
+      const formattedDate = `${year}/${month}/${day}`;
+      input.attr('placeholder', formattedDate);
+      input.val('');
+    }
+  });
 
-      // Close datepicker when clicking backdrop
-      $(document).on('click', '.datepicker-backdrop', function () {
-        $('#taskStartDate, #taskEndDate').datepicker('hide');
-      });
-    });
+  // Make inputs readonly on mobile
+  if (window.innerWidth < 768) {
+    $('.date-input').attr('readonly', 'readonly');
+  }
+
+  // Close datepicker when clicking backdrop
+  $(document).on('click', '.datepicker-backdrop', function () {
+    $('#taskStartDate, #taskEndDate').datepicker('hide');
+  });
+});
   </script>
 
   <!-- You can put your custom CSS attributes -->

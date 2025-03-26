@@ -443,7 +443,8 @@ function initializePopups() {
             const popupName = trigger.dataset.popupTrigger;
             const listId = trigger.dataset.list;
             const popup = document.querySelector(`[data-popup="${popupName}"]`);
-            
+
+
             if (popup) {
                 popup.dataset.currentList = listId;
                 popup.style.display = 'flex';
@@ -489,7 +490,8 @@ function initializePopups() {
                     onComplete: () => {
                         popup.style.display = 'none';
                         // Reset based on popup type
-                        resetTaskPopup();
+                        resetTaskPopup(popup);
+                        console.log('popup foi resetado');
                     }
                 });
             }
@@ -509,7 +511,7 @@ function initializePopups() {
                     onComplete: () => {
                         visiblePopup.style.display = 'none';
                         // Reset based on popup type
-                        resetTaskPopup();
+                        resetTaskPopup(popup);
                     }
                 });
             }
@@ -536,11 +538,10 @@ function initializePopups() {
     });
 }
 
-function resetTaskPopup() {
-    const popup = document.querySelector('.create-task-popup');
-    
+function resetTaskPopup(popupElement) {
+    const popup = popupElement;
     // Reset description to default text
-    const descriptionElement = popup.querySelector('.create-task-popup_description-area');
+    const descriptionElement = popup.querySelector('[data-popup-description');
     descriptionElement.textContent = "Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.";
     
     // Reset other fields...
@@ -564,10 +565,15 @@ function resetTaskPopup() {
 
 
     // Reset dates
-    const startDateInput = document.getElementById('taskStartDate');
-    const endDateInput = document.getElementById('taskEndDate');
-    if (startDateInput) startDateInput.value = '';
-    if (endDateInput) endDateInput.value = '';
+    const startDateInput = popup.querySelector('[id="taskStartDate"]');
+    const endDateInput = popup.querySelector('[id="taskEndDate"]');
+
+    startDateInput.value = '';
+    endDateInput.value = '';
+    startDateInput.placeholder = 'Start date';
+    endDateInput.placeholder = 'Deadline';
+    
+
 }
 
 
@@ -766,18 +772,18 @@ function initializeTaskEdit() {
             }
         }
 
-        const descriptionField = popup.querySelector('[data-edit-popup="description"]');
+        const descriptionField = popup.querySelector('[data-popup-description]');
         if (descriptionField.textContent === 'None') {
             descriptionField.textContent = 'Null';
         }else{
             descriptionField.textContent = task.dataset.itemDescription;
         }
 
-        const taskDeadlineElement = popup.querySelector('[data-data-input-deadline]');
-        taskDeadlineElement.placeholder = task.dataset.itemDeadline;
+        let taskDeadlineElement = popup.querySelector('[data-data-input-deadline]');
+        taskDeadlineElement.value = task.dataset.itemDeadline;
 
-        const taskStartDateElement = popup.querySelector('[data-data-input-startdate]');
-        taskStartDateElement = task.dataset.itemStartDate;
+        let taskStartDateElement = popup.querySelector('[data-data-input-startdate]');
+        taskStartDateElement.value = task.dataset.itemStartDate;
 
         
 
@@ -1079,6 +1085,10 @@ function createTask(){
     });
 }
 
+function updateTask(){
+
+}
+
 function commitTaskDataChange(){
     document.querySelector('[data-popup-action="edit-task"]').addEventListener('click', async function(e){
         
@@ -1093,7 +1103,7 @@ function commitTaskDataChange(){
         const currentList = currentTask.closest("[data-list]");
         console.log('List Id:' , currentList);
 
-        const descriptionElement = editPopup.querySelector('[data-edit-popup="description"]');
+        const descriptionElement = editPopup.querySelector('[data-popup-description]');
         console.log('descriptionDIV' ,descriptionElement);
 
         //Description
@@ -1143,6 +1153,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePriorityLoopSelection();
     handleProjectSelection();
     initializeTaskEdit();
-    createTask();
     commitTaskDataChange();
 });
