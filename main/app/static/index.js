@@ -1085,35 +1085,37 @@ function createTask(){
     });
 }
 
+
+
 function updateTask(){
-
-}
-
-function commitTaskDataChange(){
     document.querySelector('[data-popup-action="edit-task"]').addEventListener('click', async function(e){
         
-        const editPopup = document.querySelector('.edit-task-popup');
+        const popup = document.querySelector('.edit-task-popup');
 
         //Task ID
-        const currentTaskId = editPopup.dataset.currentTask
-        console.log('Task Id:' , currentTaskId);
-        const currentTask = document.querySelector(`[data-item="${currentTaskId}"]`);
+        const currentTaskId = popup.dataset.currentTask
+        console.log('Task ID: ' , currentTaskId);
+
+        const titleElement = popup.querySelector('[data-task-field="name"]');
+        const title = titleElement.textContent;
+        console.log(title);
+
+
 
         //List ID
+        const currentTask = document.querySelector(`[data-item="${currentTaskId}"]`);
         const currentList = currentTask.closest("[data-list]");
-        console.log('List Id:' , currentList);
-
-        const descriptionElement = editPopup.querySelector('[data-popup-description]');
-        console.log('descriptionDIV' ,descriptionElement);
+        const currentListId = currentList.dataset.list;
+        console.log('List Id:' , currentListId);
 
         //Description
+        const descriptionElement = popup.querySelector('[data-popup-description]');
         const description = descriptionElement.textContent;
         console.log(description);
         
 
-        const projectContainer = editPopup.querySelector('.project-dropdown-container');
-
         //Project ID
+        const projectContainer = popup.querySelector('.project-dropdown-container');
         let projectId = projectContainer.dataset.selectedProjectId;
         if (projectId === "null"){
             projectId = null;
@@ -1121,12 +1123,12 @@ function commitTaskDataChange(){
 
         console.log('projectId:' , projectId);
 
-        const statusElement = editPopup.querySelector('.list_item-status');
-        const priorityElement = editPopup.querySelector('.list_item-priority');
+        const statusElement = popup.querySelector('.list_item-status');
+        const priorityElement = popup.querySelector('.list_item-priority');
         const statusValue = parseInt(statusElement.dataset.statusValue) || 4;
         const priorityValue = parseInt(priorityElement.dataset.priorityValue) || 4;
-        const startDateInput = document.getElementById('taskStartDate');
-        const endDateInput = document.getElementById('taskEndDate');
+        const startDateInput = popup.querySelector('[data-data-input-startdate]');
+        const endDateInput = popup.querySelector('[data-data-input-deadline]');
         const startDate = startDateInput.value || null;
         const endDate = endDateInput.value || null;
 
@@ -1135,7 +1137,21 @@ function commitTaskDataChange(){
         console.log(startDate);
         console.log(endDate);
 
-        
+        if (!title || title === 'Add task name...') {
+            titleElement.classList.add('error');
+            return;
+        }
+
+        const requestBody = {
+            name: title,
+            list_id: listId,
+            project_id: projectId,
+            status: statusValue,
+            priority: priorityValue,
+            description: finalDescription,
+            start_date: startDate,
+            end_date: endDate
+        };
         
 
         
@@ -1153,5 +1169,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePriorityLoopSelection();
     handleProjectSelection();
     initializeTaskEdit();
-    commitTaskDataChange();
+    updateTask();
 });
