@@ -773,17 +773,15 @@ function initializeTaskEdit() {
             descriptionField.textContent = task.dataset.itemDescription;
         }
 
-        const dataInputStartDate = popup.querySelector('[data-data-input-startdate]');
-        const dataInputDeadline = popup.querySelector('[data-data-input-deadline]')
-        console.log(dataInputStartDate);
-        console.log(dataInputDeadline);
-        console.log(task);
-        if (dataInputStartDate){
-            dataInputStartDate.textContent = task.dataset.itemStartDate;
-        }
-        if (dataInputDeadline){
-            dataInputDeadline.textContent = task.dataset.itemDeadline;
-        }
+        const taskDeadlineElement = popup.querySelector('[data-data-input-deadline]');
+        taskDeadlineElement.placeholder = task.dataset.itemDeadline;
+
+        const taskStartDateElement = popup.querySelector('[data-data-input-startdate]');
+        taskStartDateElement = task.dataset.itemStartDate;
+
+        
+
+        
         // Show and animate popup
         popup.style.display = 'block';
         gsap.fromTo(popup, 
