@@ -773,13 +773,16 @@ function initializeTaskEdit() {
             }
         }
 
+
+        //DescriptionInput
         const descriptionField = popup.querySelector('[data-popup-description]');
         if (descriptionField.textContent === 'None') {
             descriptionField.textContent = 'Null';
         } else {
             descriptionField.textContent = task.dataset.itemDescription;
         }
-
+        
+        //DataInput 
         let taskDeadlineElement = popup.querySelector('[data-data-input-deadline]');
         if(task.dataset.itemDeadline === "None"){
             taskDeadlineElement.value = null;
@@ -1019,30 +1022,54 @@ function createTask() {
     document.querySelector('[data-popup-action="create-task"]').addEventListener('click', async function (e) {
         e.preventDefault();
         const popup = document.querySelector('.create-task-popup');
-        console.log(popup);
         const listId = popup.dataset.currentList;
         const taskNameElement = popup.querySelector('[data-task-field="name"]');
         const taskName = taskNameElement.textContent.trim();
 
         // Get description
-        const descriptionElement = popup.querySelector('.create-task-popup_description-area');
+        const descriptionElement = popup.querySelector('[data-popup-description]');
         const defaultDescription = "Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.";
         const description = descriptionElement.textContent.trim();
         const finalDescription = description === defaultDescription ? null : description;
 
         // Get project ID and log it
         const projectContainer = popup.querySelector('.project-dropdown-container');
-        const projectId = projectContainer.dataset.selectedProjectId;
+        let projectId = projectContainer.dataset.selectedProjectId;
+        
+        if(!projectId){
+            projectId = null;
+        }
+        else{
+            projectId = projectContainer.dataset.selectedProjectId;
+        }
 
+        
         // Get other values
         const statusElement = popup.querySelector('.list_item-status');
+        console.log('Status Element:', statusElement);
+        
         const priorityElement = popup.querySelector('.list_item-priority');
-        const statusValue = parseInt(statusElement.dataset.statusValue) || 4;
-        const priorityValue = parseInt(priorityElement.dataset.priorityValue) || 4;
+        console.log('Priority Element:', priorityElement);
+        
+        const statusValue = parseInt(statusElement?.dataset?.statusValue) || 4;
+        console.log('Status Value:', statusValue);
+        
+        const priorityValue = parseInt(priorityElement?.dataset?.priorityValue) || 4;
+        console.log('Priority Value:', priorityValue);
+        
         const startDateInput = document.getElementById('taskStartDate');
+        console.log('Start Date Input:', startDateInput);
+        
         const endDateInput = document.getElementById('taskEndDate');
-        const startDate = startDateInput.value || null;
-        const endDate = endDateInput.value || null;
+        console.log('End Date Input:', endDateInput);
+        
+        const startDate = startDateInput?.value || null;
+        console.log('Start Date:', startDate);
+        
+        const endDate = endDateInput?.value || null;
+        console.log('End Date:', endDate);
+
+        
 
         // Validate task name
         if (!taskName || taskName === 'Add task name...') {
@@ -1086,7 +1113,7 @@ function createTask() {
                         received: data.task.project_id
                     });
                 }
-                resetTaskPopup();
+                resetTaskPopup(popup);
                 popup.style.display = 'none';
                 location.reload();
             } else {
@@ -1145,16 +1172,16 @@ function updateTask() {
         const priorityElement = popup.querySelector('.list_item-priority');
         const statusValue = parseInt(statusElement.dataset.statusValue) || 4;
         const priorityValue = parseInt(priorityElement.dataset.priorityValue) || 4;
-        console.log('Status:', statusValue);
-        console.log('Priority:', priorityValue);
+
 
         // Dates
         const startDateInput = popup.querySelector('[data-data-input-startdate]');
         const endDateInput = popup.querySelector('[data-data-input-deadline]');
-        const startDate = startDateInput.value || null;
-        const endDate = endDateInput.value || null;
-        console.log('Start Date:', startDate);
-        console.log('End Date:', endDate);
+        
+        
+        const startDate = startDateInput.value||null;
+
+        const endDate =endDateInput.value||null;
 
         // Prepare the request body
         const requestBody = {

@@ -214,7 +214,7 @@
           
           <!-- First List-->
           {% for task in tasks|filter_by_list:1 %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content">
             <div class="flex gap5">
@@ -283,7 +283,7 @@
           </div>
 
           {% for task in tasks|filter_by_list:list.id %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date }}" data-item-deadline="{{ task.deadline }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
             <div class="flex gap5">
@@ -455,10 +455,7 @@
             <div class="create-task-popup_description">
               <div class="flex padding-left-5">Description</div>
               <div class="create-task-popup_description-area-wrap">
-                <div class="create-task-popup_description-area" contenteditable="false" data-popup-description>Design a sleek landing page for
-                  a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a
-                  car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.
-                </div>
+                <div class="create-task-popup_description-area" contenteditable="false" data-popup-description>Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.</div>
               </div>
             </div>
             <div id="w-node-_16707b88-6c8a-e22d-49c1-bfe1deb1c8ab-c64eea3b" class="flex justify-end gap5">
@@ -587,10 +584,7 @@
             <div class="edit-task-popup_description">
               <div class="flex padding-left-5">Description</div>
               <div class="create-task-popup_description-area-wrap">
-                <div contenteditable="false" class="create-task-popup_description-area has-content" data-popup-description>Design a sleek
-                  landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive
-                  elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across
-                  all devices.</div>
+                <div contenteditable="false" class="create-task-popup_description-area has-content" data-popup-description>Design a sleek landing page for a car enthusiast website, featuring high-quality images, a modern UI, and interactive elements like a car comparison tool. Ensure responsiveness and optimize for fast loading speeds across all devices.</div>
               </div>
             </div>
             <div id="w-node-_7a7cb3cd-a264-9701-a0b2-7d30d3141c72-c64eea3b" class="flex justify-end gap5">
@@ -637,7 +631,7 @@ $(document).ready(function () {
       const year = selectedDate.getFullYear();
       const month = ('0' + (selectedDate.getMonth() + 1)).slice(-2); // Months are zero-based
       const day = ('0' + selectedDate.getDate()).slice(-2);
-      const formattedDate = `${year}/${month}/${day}`;
+      const formattedDate = `${year}-${month}-${day}`;
       input.attr('placeholder', formattedDate);
       input.val('');
     }

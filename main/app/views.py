@@ -3,7 +3,7 @@ from .models import Task, List, Project, Status, Priority
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
-
+from datetime import datetime
 #page
 def home(request):
     lists = List.objects.all()
@@ -197,8 +197,12 @@ def update_task(request):
         # Update fields
         task.name = data.get('name', task.name)
         task.description = data.get('description', task.description)
-        task.start_date = data.get('start_date', task.start_date)
-        task.deadline = data.get('end_date', task.deadline)
+        
+        # Update dates directly
+        task.start_date = data.get('start_date') or None  # Expecting "YYYY-MM-DD"
+        task.deadline = data.get('end_date') or None  # Expecting "YYYY-MM-DD"
+
+
 
         # Update related objects
         if 'status' in data:
