@@ -177,3 +177,70 @@ def create_task(request):
             
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+@require_http_methods(["POST"])
+def update_task(request):
+    try:
+        data = json.loads(request.body)
+        
+        # Validate required fields
+        task_id = data.get('task_id')
+        if not task_id:
+            return JsonResponse({'status': 'error', 'message': 'Task ID is required'}, status=400)
+
+        # Fetch the task to update
+        try:
+            task = Task.objects.get(id=task_id)
+        except Task.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Task not found'}, status=404)
+
+        # Update fields
+        task.name = data.get('name', task.name)
+        task.description = data.get('description', task.description)
+        task.start_date = data.get('start_date', task.start_date)
+        task.deadline = data.get('end_date', task.deadline)
+
+        # Update related objects
+        if 'status' in data:
+            try:
+                task.status = Status.objects.get(id=int(data['status']))
+            except Status.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': 'Invalid status ID'}, status=400)
+
+        if 'priority' in data:
+            try:
+                task.priority = Priority.objects.get(id=int(data['priority']))
+            except Priority.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': 'Invalid priority ID'}, status=400)
+
+            if 'project_id' in data:
+                project_id = data['project_id']
+                if project_id in (None, 'null', 'undefined', ''):
+                    task.project = None  # Set project to null
+                else:
+                    try:
+                        task.project = Project.objects.get(id=int(project_id))
+                    except Project.DoesNotExist:
+                        return JsonResponse({'status': 'error', 'message': 'Invalid project ID'}, status=400)
+
+        # Save the updated task
+        task.save()
+
+        # Return the updated task data
+        return JsonResponse({
+            'status': 'success',
+            'task': {
+                'id': task.id,
+                'name': task.name,
+                'list_id': task.list_id,
+                'project_id': task.project.id if task.project else None,
+                'status': task.status.id,
+                'priority': task.priority.id,
+                'description': task.description,
+                'start_date': task.start_date,
+                'end_date': task.deadline
+            }
+        })
+
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
