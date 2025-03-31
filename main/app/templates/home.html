@@ -170,7 +170,7 @@
 
         {% csrf_token %}
         <!-- First list (Recently assigned) -->
-        <div data-list="first" data-list="1" class="list">
+        <div data-list="1" data-list="1" class="list">
           <div class="list-header">
             <div class="flex gap5">
               <div class="list_header-title">Recently assigned</div>
@@ -214,7 +214,7 @@
           
           <!-- First List-->
           {% for task in tasks|filter_by_list:1 %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}" data-current-list="{{ task.list_id }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %} task-content">
             <div class="flex gap5">
@@ -283,7 +283,7 @@
           </div>
 
           {% for task in tasks|filter_by_list:list.id %}
-          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}"
+          <div data-item="{{ task.id }}" data-popup-trigger="edit-task" data-task-id="{{ task.id }}" data-item-project-id="{{ task.project.id }}" data-item-project-name="{{ task.project.name }}" data-item-description="{{ task.description }}" data-item-start-date="{{ task.start_date|date:'Y-m-d' }}" data-item-deadline="{{ task.deadline|date:'Y-m-d' }}" data-current-list="{{ task.list_id }}"
             data-edit-mode="true"
             class="w-layout-grid list-item {% if task.project %}{{ task.project.color.color }}{% endif %}">
             <div class="flex gap5">
@@ -610,7 +610,7 @@
 $(document).ready(function () {
   // Initialize datepickers
   $('#taskStartDate, #taskEndDate').datepicker({
-    format: 'yyyy/mm/dd',
+    format: 'yyyy-mm-dd',
     autoHide: true,
     zIndex: 2048,
     container: 'body', // Change container to body for better positioning

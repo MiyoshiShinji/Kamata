@@ -138,6 +138,8 @@ function initializeSortable() {
                 const newListId = evt.to.dataset.list;
                 const newIndex = evt.newIndex;
 
+                evt.item.dataset.currentList = newListId;
+
                 updateTaskPosition(taskId, newListId, newIndex);
                 updateListsUI();
 
@@ -600,7 +602,7 @@ function handleListDelete() {
             }
 
             const listElement = document.querySelector(`[data-list="${listId}"]`);
-            const firstList = document.querySelector('[data-list="first"]');
+            const firstList = document.querySelector('[data-list="1"]');
 
             if (listElement && deleteOption === 'keep') {
                 // Get all tasks from the list being deleted
@@ -701,6 +703,10 @@ function initializeTaskEdit() {
         e.stopPropagation();
         const popup = document.querySelector('[data-popup="edit-task"]');
         if (!popup) return;
+
+        
+        popup.dataset.currentList = task.dataset.currentList;
+
 
         // Helper function to update popup elements
         const updatePopupElement = (popupSelector, taskSelector, className = null) => {
@@ -1230,6 +1236,12 @@ function updateTask() {
             // Optionally, show an error message to the user
         }
     });
+}
+
+function deleteTask(){
+    document.querySelector('[data-popup-action="delete-task"]').addEventListener('click', async function () {
+        
+    })
 }
 
 document.addEventListener('DOMContentLoaded', () => {
