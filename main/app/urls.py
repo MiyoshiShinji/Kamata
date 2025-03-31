@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/delete-list/', views.delete_list, name='delete_list'),
     path('api/create-task/', views.create_task, name='create_task'),
     path('api/update-task/', views.update_task, name='update_task'),
+    path('api/delete_task/', views.delete_task, name='delete_task')
 ]

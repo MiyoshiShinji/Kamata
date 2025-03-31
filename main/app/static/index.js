@@ -1240,7 +1240,63 @@ function updateTask() {
 
 function deleteTask(){
     document.querySelector('[data-popup-action="delete-task"]').addEventListener('click', async function () {
+        const popup = this.closest('[data-popup]');
+        const taskId = popup.dataset.currentTask;
+        const currentTask = document.querySelector(`[data-item="${taskId}"]`)
         
+        try {
+            console.log('Request Body:', {
+                taskId: taskId,
+            });
+
+            const response = await fetch('/api/delete_task/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    taskId: taskId,
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete task');
+            }else{
+                
+                gsap.to(popup, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        popup.style.display = 'none';
+                    }
+                });
+    
+                // Animate the task removal and reposition tasks underneath
+                const taskList = currentTask.closest('.list'); // Get the parent list
+                const tasksBelow = Array.from(taskList.querySelectorAll('.list-item')).filter(task => {
+                    return task.compareDocumentPosition(currentTask) & Node.DOCUMENT_POSITION_FOLLOWING;
+                });
+    
+                // Animate the current task disappearing
+                gsap.to(currentTask, {
+                    opacity: 0,
+                    height: 0,
+                    marginBottom: 0,
+                    duration: 0.3,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        currentTask.remove(); // Remove the task from the DOM
+                    }
+                });
+    
+            }
+
+        }
+        catch (error){
+            console.error('Error deleting task', error);
+        }
     })
 }
 
@@ -1258,4 +1314,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateTask();
     handleListDelete();
     createTask();
+    deleteTask();
 });

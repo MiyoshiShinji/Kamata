@@ -122,6 +122,43 @@ def delete_list(request):
         }, status=500)
 
 @require_http_methods(["POST"])
+def delete_task(request):
+    try:
+        data = json.loads(request.body)
+        taskId = data.get('taskId')
+
+        print(f"Raw request body: {request.body}")
+
+        if not taskId or not str(taskId).isdigit():
+            return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid task ID'
+        }, status=400)
+
+        task_obj = Task.objects.get(id=taskId)
+
+        if task_obj:
+
+            Task.objects.filter(id=taskId).delete()
+
+        return JsonResponse({
+            'status':'success',
+            'message': 'Task deletion processed successfully'
+        })
+
+
+    except Task.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Task not found'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=500)
+
+@require_http_methods(["POST"])
 def create_task(request):
     try:
         data = json.loads(request.body)
