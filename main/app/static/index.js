@@ -1,7 +1,5 @@
-// Add this at the top of the file, before any functions
 let isDragging = false;
 
-// Step 2: Refactor the animation system first (safest change)
 const AnimationSystem = {
     fadeIn(element, delay = 0) {
         gsap.set(element, { display: 'block', opacity: 0 });
@@ -47,6 +45,8 @@ function initializeTooltips() {
         }
     });
 }
+
+
 
 // Subpage menus functionality
 function initializeSubpageMenus() {
@@ -396,7 +396,7 @@ function makeEditable(element, options = {}) {
         this.focus();
 
         const saveChanges = () => {
-            const newText = this.textContent.trim().substring(0, maxLength);
+            const newText = this.textContent.trim();
 
             if (!newText && clearOnEdit) {
                 this.textContent = currentText;
@@ -417,6 +417,21 @@ function makeEditable(element, options = {}) {
                 onSave(newText);
             }
         };
+
+        // Prevent typing beyond max length
+        this.addEventListener('input', function () {
+            if (this.textContent.length > maxLength) {
+                this.textContent = this.textContent.substring(0, maxLength);
+
+                // Place cursor at the end of the text
+                const range = document.createRange();
+                const sel = window.getSelection();
+                range.selectNodeContents(this);
+                range.collapse(false);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        });
 
         this.addEventListener('blur', saveChanges, { once: true });
 
@@ -459,8 +474,8 @@ function initializePopups() {
                 popup.querySelectorAll('.create-task-popup_task-name, .create-task-popup_description-area').forEach(element => {
                     makeEditable(element, {
                         defaultText: element.classList.contains('create-task-popup_task-name') ? 'Add task name...' : 'Add description...',
-                        maxLength: element.classList.contains('create-task-popup_task-name') ? 50 : 500,
-                        saveOnEnter: element.classList.contains('create-task-popup_task-name'),
+                        maxLength: element.classList.contains('create-task-popup_task-name') ? 30 : 500,
+                        saveOnEnter: true,
                         clearOnEdit: true,
                         onSave: (newText) => {
                             if (newText !== element.defaultText) {
@@ -493,7 +508,6 @@ function initializePopups() {
                         popup.style.display = 'none';
                         // Reset based on popup type
                         resetTaskPopup(popup);
-                        console.log('popup foi resetado');
                     }
                 });
             }
@@ -503,7 +517,7 @@ function initializePopups() {
     // Handle escape key - unified handler for all popups
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            const visiblePopup = document.querySelector('.create-task-popup[style*="flex"], .edit-task-popup[style*="flex"]');
+            const visiblePopup = document.querySelector('.create-task-popup[style*="flex"], .edit-task-popup[style*="block"]');
             if (visiblePopup) {
                 const popupName = visiblePopup.dataset.popup;
                 gsap.to(visiblePopup, {
@@ -739,7 +753,7 @@ function initializeTaskEdit() {
 
             // Initialize editable functionality
             makeEditable(nameField, {
-                maxLength: 50,
+                maxLength: 30,
                 saveOnEnter: true,
                 clearOnEdit: true,  // Add this option
                 onSave: (newText) => {
@@ -778,6 +792,7 @@ function initializeTaskEdit() {
 
             }
         }
+        
 
 
         //DescriptionInput
@@ -824,7 +839,32 @@ function initializeTaskEdit() {
     });
 }
 
+function initializeProjectDropdown() {
+    document.querySelectorAll('.project-dropdown-container').forEach(container => {
+        const trigger = container.querySelector('.project-dropdown-header');
+        const list = container.querySelector('.project-dropdown-list');
 
+        if (trigger.dataset.initialized) return;
+
+        trigger.dataset.initialized = 'true';
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            list.style.display = list.style.display === 'block' ? 'none' : 'block';
+        });
+
+        container.querySelectorAll('.project-option').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const projectId = option.dataset.projectId;
+                const projectName = option.querySelector('span').textContent;
+
+                container.querySelector('[data-project-selection-title]').textContent = projectName;
+                container.setAttribute('data-selected-project-id', projectId);
+                list.style.display = 'none';
+            });
+        });
+    });
+}
 //project selection method
 function handleProjectSelection() {
     document.querySelectorAll('.project-dropdown-container').forEach(container => {
@@ -853,32 +893,7 @@ function handleProjectSelection() {
     });
 }
 
-function initializeProjectDropdown() {
-    document.querySelectorAll('.project-dropdown-container').forEach(container => {
-        const trigger = container.querySelector('.project-dropdown-header');
-        const list = container.querySelector('.project-dropdown-list');
 
-        if (trigger.dataset.initialized) return;
-
-        trigger.dataset.initialized = 'true';
-        trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            list.style.display = list.style.display === 'block' ? 'none' : 'block';
-        });
-
-        container.querySelectorAll('.project-option').forEach(option => {
-            option.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const projectId = option.dataset.projectId;
-                const projectName = option.querySelector('span').textContent;
-
-                container.querySelector('[data-project-selection-title]').textContent = projectName;
-                container.setAttribute('data-selected-project-id', projectId);
-                list.style.display = 'none';
-            });
-        });
-    });
-}
 
 function updateProjectSelectionForEditPopup(task) {
     const popup = document.querySelector('.edit-task-popup');
