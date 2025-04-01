@@ -836,6 +836,7 @@ function initializeTaskEdit() {
         initializeStatusLoopSelection();
         initializePriorityLoopSelection();
         initializeProjectDropdown();
+        handleProjectSelection();
     });
 }
 
